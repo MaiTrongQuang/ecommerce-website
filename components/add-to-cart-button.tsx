@@ -15,11 +15,10 @@ interface AddToCartButtonProps {
     images: string[]
     quantity: number
   }
-  quantity?: number
   className?: string
 }
 
-export function AddToCartButton({ product, quantity = 1, className }: AddToCartButtonProps) {
+export function AddToCartButton({ product, className }: AddToCartButtonProps) {
   const { addToCart } = useCart()
   const { t } = useLanguage()
 
@@ -30,7 +29,7 @@ export function AddToCartButton({ product, quantity = 1, className }: AddToCartB
       name: product.name,
       slug: product.slug,
       price: product.price,
-      quantity,
+      quantity: 1, // Always add 1 item at a time
       image: product.images[0] || "/placeholder.svg?height=400&width=400",
       stock: product.quantity,
     }

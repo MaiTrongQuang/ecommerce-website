@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { ShoppingCart } from "lucide-react"
 import { useCart } from "@/lib/use-cart"
 import { useLanguage } from "@/lib/i18n/context"
+import { formatPrice } from "@/lib/utils/format-price"
 import type { CartItem } from "@/lib/cart-slice"
 
 interface ProductCardProps {
@@ -21,7 +22,7 @@ interface ProductCardProps {
 
 export function ProductCard({ id, name, slug, price, compareAtPrice, image, quantity = 1 }: ProductCardProps) {
   const { addToCart } = useCart()
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
   const discount = compareAtPrice ? Math.round(((compareAtPrice - price) / compareAtPrice) * 100) : 0
 
   const handleAddToCart = (e: React.MouseEvent) => {
@@ -34,9 +35,9 @@ export function ProductCard({ id, name, slug, price, compareAtPrice, image, quan
       name,
       slug,
       price,
-      quantity,
+      quantity: 1, // Always add 1 item at a time
       image: image || "/placeholder.svg?height=400&width=400",
-      stock: quantity, // You might want to fetch actual stock from product data
+      stock: quantity, // Stock quantity from product data
     }
 
     addToCart(cartItem)
@@ -64,9 +65,9 @@ export function ProductCard({ id, name, slug, price, compareAtPrice, image, quan
           <h3 className="font-semibold line-clamp-2 hover:text-primary transition-colors">{name}</h3>
         </Link>
         <div className="mt-2 flex items-center gap-2">
-          <span className="text-lg font-bold">${price.toFixed(2)}</span>
+          <span className="text-lg font-bold">{formatPrice(price, language)}</span>
           {compareAtPrice && (
-            <span className="text-sm text-muted-foreground line-through">${compareAtPrice.toFixed(2)}</span>
+            <span className="text-sm text-muted-foreground line-through">{formatPrice(compareAtPrice, language)}</span>
           )}
         </div>
       </CardContent>

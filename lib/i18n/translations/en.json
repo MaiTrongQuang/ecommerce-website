@@ -140,7 +140,10 @@
     "clearCart": "Clear Cart",
     "orderSummary": "Order Summary",
     "secureCheckout": "Secure checkout powered by Stripe",
-    "viewCart": "View Cart"
+    "viewCart": "View Cart",
+    "addedToCart": "Added to cart",
+    "addedToCartDesc": "{{name}} has been added to your cart",
+    "removedFromCart": "Removed from cart"
   },
   "checkout": {
     "title": "Checkout",

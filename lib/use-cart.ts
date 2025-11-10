@@ -17,6 +17,7 @@ import {
 } from "@/lib/cart-slice"
 import { createClient } from "@/lib/client"
 import { useAuth } from "./use-auth"
+import { useLanguage } from "@/lib/i18n/context"
 import { useCallback } from "react"
 import { toast } from "sonner"
 
@@ -27,6 +28,7 @@ export function useCart() {
   const itemCount = useAppSelector(selectCartItemCount)
   const isOpen = useAppSelector(selectIsCartOpen)
   const { user } = useAuth()
+  const { t } = useLanguage()
   const supabase = createClient()
 
   const addToCart = useCallback(
@@ -49,11 +51,11 @@ export function useCart() {
         }
       }
 
-      toast.success("Added to cart", {
-        description: `${item.name} has been added to your cart`,
+      toast.success(t("cart.addedToCart"), {
+        description: t("cart.addedToCartDesc").replace("{{name}}", item.name),
       })
     },
-    [dispatch, user],
+    [dispatch, user, t],
   )
 
   const removeFromCart = useCallback(
@@ -71,9 +73,9 @@ export function useCart() {
         }
       }
 
-      toast.success("Removed from cart")
+      toast.success(t("cart.removedFromCart"))
     },
-    [dispatch, user, items],
+    [dispatch, user, items, t],
   )
 
   const updateQuantity = useCallback(

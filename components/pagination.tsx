@@ -49,18 +49,29 @@ export function Pagination({ currentPage, totalPages, baseUrl, searchParams = {}
       {/* Pagination Controls - Only show if more than 1 page */}
       {totalPages > 1 && (
       <div className="flex items-center justify-center gap-2 flex-wrap">
-        <Button 
-          variant="outline" 
-          size="sm"
-          asChild 
-          disabled={currentPage === 1}
-          className="gap-1"
-        >
-          <Link href={buildUrl(currentPage - 1)}>
+        {currentPage === 1 ? (
+          <Button 
+            variant="outline" 
+            size="sm"
+            disabled
+            className="gap-1"
+          >
             <ChevronLeft className="h-4 w-4" />
             <span className="hidden sm:inline">{t("common.previous")}</span>
-          </Link>
-        </Button>
+          </Button>
+        ) : (
+          <Button 
+            variant="outline" 
+            size="sm"
+            asChild 
+            className="gap-1"
+          >
+            <Link href={buildUrl(currentPage - 1)}>
+              <ChevronLeft className="h-4 w-4" />
+              <span className="hidden sm:inline">{t("common.previous")}</span>
+            </Link>
+          </Button>
+        )}
 
         {startPage > 1 && (
           <>
@@ -79,7 +90,7 @@ export function Pagination({ currentPage, totalPages, baseUrl, searchParams = {}
             variant={page === currentPage ? "default" : "outline"} 
             size="sm"
             asChild={page !== currentPage}
-            className={page === currentPage ? "min-w-[2.5rem]" : ""}
+            className={page === currentPage ? "min-w-10" : ""}
           >
             {page === currentPage ? (
               <span>{page}</span>
@@ -100,18 +111,29 @@ export function Pagination({ currentPage, totalPages, baseUrl, searchParams = {}
           </>
         )}
 
-        <Button 
-          variant="outline" 
-          size="sm"
-          asChild 
-          disabled={currentPage === totalPages}
-          className="gap-1"
-        >
-          <Link href={buildUrl(currentPage + 1)}>
+        {currentPage === totalPages ? (
+          <Button 
+            variant="outline" 
+            size="sm"
+            disabled
+            className="gap-1"
+          >
             <span className="hidden sm:inline">{t("common.next")}</span>
             <ChevronRight className="h-4 w-4" />
-          </Link>
-        </Button>
+          </Button>
+        ) : (
+          <Button 
+            variant="outline" 
+            size="sm"
+            asChild 
+            className="gap-1"
+          >
+            <Link href={buildUrl(currentPage + 1)}>
+              <span className="hidden sm:inline">{t("common.next")}</span>
+              <ChevronRight className="h-4 w-4" />
+            </Link>
+          </Button>
+        )}
       </div>
       )}
     </div>

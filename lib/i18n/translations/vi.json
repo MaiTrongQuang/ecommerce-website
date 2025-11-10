@@ -140,7 +140,10 @@
     "clearCart": "Xóa Giỏ Hàng",
     "orderSummary": "Tóm Tắt Đơn Hàng",
     "secureCheckout": "Thanh toán an toàn được hỗ trợ bởi Stripe",
-    "viewCart": "Xem Giỏ Hàng"
+    "viewCart": "Xem Giỏ Hàng",
+    "addedToCart": "Đã thêm vào giỏ hàng",
+    "addedToCartDesc": "{{name}} đã được thêm vào giỏ hàng của bạn",
+    "removedFromCart": "Đã xóa khỏi giỏ hàng"
   },
   "checkout": {
     "title": "Thanh Toán",

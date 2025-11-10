@@ -2,6 +2,7 @@
 
 import { useCart } from "@/lib/use-cart"
 import { useLanguage } from "@/lib/i18n/context"
+import { formatPrice } from "@/lib/utils/format-price"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
@@ -11,10 +12,10 @@ import Link from "next/link"
 
 export default function CartPage() {
   const { items, total, clearCart } = useCart()
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
 
   const subtotal = total
-  const shipping = total > 50 ? 0 : 10
+  const shipping = total > 500000 ? 0 : 30000 // Free shipping over 500,000 VND
   const tax = subtotal * 0.1
   const finalTotal = subtotal + shipping + tax
 
@@ -77,26 +78,28 @@ export default function CartPage() {
                 <div className="space-y-2">
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-muted-foreground">{t("cart.subtotal")}</span>
-                    <span className="font-medium">${subtotal.toFixed(2)}</span>
+                    <span className="font-medium">{formatPrice(subtotal, language)}</span>
                   </div>
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-muted-foreground">{t("cart.shipping")}</span>
-                    <span className="font-medium">{shipping === 0 ? t("checkout.free") : `$${shipping.toFixed(2)}`}</span>
+                    <span className="font-medium">{shipping === 0 ? t("checkout.free") : formatPrice(shipping, language)}</span>
                   </div>
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-muted-foreground">{t("cart.taxPercent")}</span>
-                    <span className="font-medium">${tax.toFixed(2)}</span>
+                    <span className="font-medium">{formatPrice(tax, language)}</span>
                   </div>
                   <Separator />
                   <div className="flex items-center justify-between">
                     <span className="font-semibold">{t("cart.total")}</span>
-                    <span className="font-bold text-xl">${finalTotal.toFixed(2)}</span>
+                    <span className="font-bold text-xl">{formatPrice(finalTotal, language)}</span>
                   </div>
                 </div>
 
                 {shipping > 0 && (
                   <div className="bg-muted p-3 rounded-md text-sm">
-                    <p className="text-muted-foreground">{t("cart.addMoreForFreeShipping").replace("{{amount}}", (50 - subtotal).toFixed(2))}</p>
+                    <p className="text-muted-foreground">
+                      {t("cart.addMoreForFreeShipping").replace("{{amount}}", formatPrice(500000 - subtotal, language))}
+                    </p>
                   </div>
                 )}
 

@@ -6,6 +6,7 @@ import { Separator } from "@/components/ui/separator"
 import { AddToCartButton } from "@/components/add-to-cart-button"
 import { ProductReviews } from "@/components/product-reviews"
 import { useLanguage } from "@/lib/i18n/context"
+import { formatPrice } from "@/lib/utils/format-price"
 import { Star } from "lucide-react"
 
 interface ProductDetailContentProps {
@@ -39,7 +40,7 @@ interface ProductDetailContentProps {
 }
 
 export function ProductDetailContent({ product, averageRating }: ProductDetailContentProps) {
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
   const ratings = product.reviews?.map((r) => r.rating) || []
   const discount = product.compare_at_price
     ? Math.round(((product.compare_at_price - product.price) / product.compare_at_price) * 100)
@@ -110,9 +111,9 @@ export function ProductDetailContent({ product, averageRating }: ProductDetailCo
 
           {/* Price */}
           <div className="flex items-center gap-4">
-            <span className="text-3xl font-bold">${product.price.toFixed(2)}</span>
+            <span className="text-3xl font-bold">{formatPrice(product.price, language)}</span>
             {product.compare_at_price && (
-              <span className="text-xl text-muted-foreground line-through">${product.compare_at_price.toFixed(2)}</span>
+              <span className="text-xl text-muted-foreground line-through">{formatPrice(product.compare_at_price, language)}</span>
             )}
           </div>
 

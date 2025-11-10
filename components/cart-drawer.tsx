@@ -2,6 +2,7 @@
 
 import { useCart } from "@/lib/use-cart"
 import { useLanguage } from "@/lib/i18n/context"
+import { formatPrice } from "@/lib/utils/format-price"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -12,7 +13,10 @@ import Link from "next/link"
 
 export function CartDrawer() {
   const { items, total, isOpen, closeCart } = useCart()
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
+  const shipping = total > 500000 ? 0 : 30000 // Free shipping over 500,000 VND
+  const tax = total * 0.1
+  const finalTotal = total + shipping + tax
 
   return (
     <Sheet open={isOpen} onOpenChange={closeCart}>
@@ -46,16 +50,20 @@ export function CartDrawer() {
               <div className="space-y-2">
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-muted-foreground">{t("cart.subtotal")}</span>
-                  <span className="font-medium">${total.toFixed(2)}</span>
+                  <span className="font-medium">{formatPrice(total, language)}</span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-muted-foreground">{t("cart.shipping")}</span>
-                  <span className="font-medium">{total > 50 ? "FREE" : "$10.00"}</span>
+                  <span className="font-medium">{shipping === 0 ? t("checkout.free") : formatPrice(shipping, language)}</span>
+                </div>
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-muted-foreground">{t("cart.taxPercent")}</span>
+                  <span className="font-medium">{formatPrice(tax, language)}</span>
                 </div>
                 <Separator />
                 <div className="flex items-center justify-between">
                   <span className="font-semibold">{t("cart.total")}</span>
-                  <span className="font-bold text-lg">${(total + (total > 50 ? 0 : 10)).toFixed(2)}</span>
+                  <span className="font-bold text-lg">{formatPrice(finalTotal, language)}</span>
                 </div>
               </div>
 

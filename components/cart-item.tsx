@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Minus, Plus, Trash2 } from "lucide-react"
 import { useCart } from "@/lib/use-cart"
+import { useLanguage } from "@/lib/i18n/context"
+import { formatPrice } from "@/lib/utils/format-price"
 import type { CartItem as CartItemType } from "@/lib/cart-slice"
 
 interface CartItemProps {
@@ -14,6 +16,7 @@ interface CartItemProps {
 
 export function CartItem({ item }: CartItemProps) {
   const { updateQuantity, removeFromCart } = useCart()
+  const { language } = useLanguage()
 
   const handleQuantityChange = (newQuantity: number) => {
     if (newQuantity > 0 && newQuantity <= item.stock) {
@@ -77,7 +80,7 @@ export function CartItem({ item }: CartItemProps) {
               <Plus className="h-3 w-3" />
             </Button>
           </div>
-          <span className="font-semibold">${(item.price * item.quantity).toFixed(2)}</span>
+          <span className="font-semibold">{formatPrice(item.price * item.quantity, language)}</span>
         </div>
       </div>
     </div>
