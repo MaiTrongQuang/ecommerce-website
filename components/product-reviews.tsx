@@ -4,6 +4,7 @@ import type React from "react"
 
 import { useState } from "react"
 import { useAuth } from "@/lib/use-auth"
+import { useLanguage } from "@/lib/i18n/context"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Input } from "@/components/ui/input"
@@ -32,6 +33,7 @@ interface ProductReviewsProps {
 
 export function ProductReviews({ productId, reviews, averageRating }: ProductReviewsProps) {
   const { user } = useAuth()
+  const { t } = useLanguage()
   const router = useRouter()
   const [showForm, setShowForm] = useState(false)
   const [rating, setRating] = useState(5)
@@ -42,7 +44,7 @@ export function ProductReviews({ productId, reviews, averageRating }: ProductRev
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!user) {
-      toast.error("Please login to leave a review")
+      toast.error(t("reviews.pleaseLogin"))
       return
     }
 
@@ -62,14 +64,14 @@ export function ProductReviews({ productId, reviews, averageRating }: ProductRev
 
       if (!response.ok) throw new Error("Failed to submit review")
 
-      toast.success("Review submitted successfully")
+      toast.success(t("reviews.reviewSubmitted"))
       setShowForm(false)
       setTitle("")
       setComment("")
       setRating(5)
       router.refresh()
     } catch (error) {
-      toast.error("Failed to submit review")
+      toast.error(t("reviews.failedSubmit"))
     } finally {
       setIsSubmitting(false)
     }
@@ -78,7 +80,7 @@ export function ProductReviews({ productId, reviews, averageRating }: ProductRev
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="text-2xl font-bold mb-4">Customer Reviews</h2>
+        <h2 className="text-2xl font-bold mb-4">{t("reviews.customerReviews")}</h2>
         {reviews.length > 0 && (
           <div className="flex items-center gap-4 mb-6">
             <div className="flex items-center">
@@ -91,35 +93,35 @@ export function ProductReviews({ productId, reviews, averageRating }: ProductRev
                 />
               ))}
             </div>
-            <span className="text-lg font-semibold">{averageRating.toFixed(1)} out of 5</span>
+            <span className="text-lg font-semibold">{averageRating.toFixed(1)} {t("reviews.outOf5")}</span>
             <span className="text-muted-foreground">
-              ({reviews.length} {reviews.length === 1 ? "review" : "reviews"})
+              ({reviews.length} {reviews.length === 1 ? t("reviews.review") : t("reviews.reviews")})
             </span>
           </div>
         )}
       </div>
 
-      {user && !showForm && <Button onClick={() => setShowForm(true)}>Write a Review</Button>}
+      {user && !showForm && <Button onClick={() => setShowForm(true)}>{t("reviews.writeReview")}</Button>}
 
       {!user && (
         <p className="text-sm text-muted-foreground">
-          Please{" "}
+          {t("reviews.pleaseLogin").replace("login", "").trim()}{" "}
           <Button variant="link" className="p-0 h-auto" asChild>
-            <a href="/auth/login">login</a>
+            <a href="/auth/login">{t("reviews.login")}</a>
           </Button>{" "}
-          to leave a review
+          {t("reviews.toLeaveReview")}
         </p>
       )}
 
       {showForm && (
         <Card>
           <CardHeader>
-            <h3 className="font-semibold">Write Your Review</h3>
+            <h3 className="font-semibold">{t("reviews.writeYourReview")}</h3>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <Label>Rating</Label>
+                <Label>{t("product.rating")}</Label>
                 <div className="flex items-center gap-2 mt-2">
                   {[1, 2, 3, 4, 5].map((value) => (
                     <button key={value} type="button" onClick={() => setRating(value)} className="focus:outline-none">
@@ -136,32 +138,32 @@ export function ProductReviews({ productId, reviews, averageRating }: ProductRev
               </div>
 
               <div>
-                <Label htmlFor="title">Title</Label>
+                <Label htmlFor="title">{t("product.reviewTitle")}</Label>
                 <Input
                   id="title"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  placeholder="Sum up your review"
+                  placeholder={t("reviews.sumUpReview")}
                 />
               </div>
 
               <div>
-                <Label htmlFor="comment">Review</Label>
+                <Label htmlFor="comment">{t("product.reviews")}</Label>
                 <Textarea
                   id="comment"
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
-                  placeholder="Share your thoughts about this product"
+                  placeholder={t("reviews.shareThoughts")}
                   rows={4}
                 />
               </div>
 
               <div className="flex gap-2">
                 <Button type="submit" disabled={isSubmitting}>
-                  {isSubmitting ? "Submitting..." : "Submit Review"}
+                  {isSubmitting ? t("reviews.submitting") : t("reviews.submitReview")}
                 </Button>
                 <Button type="button" variant="outline" onClick={() => setShowForm(false)}>
-                  Cancel
+                  {t("common.cancel")}
                 </Button>
               </div>
             </form>
@@ -193,7 +195,7 @@ export function ProductReviews({ productId, reviews, averageRating }: ProductRev
                   </span>
                 </div>
                 {review.comment && <p className="text-muted-foreground mt-2">{review.comment}</p>}
-                <p className="text-sm text-muted-foreground mt-2">By {review.profiles?.full_name || "Anonymous"}</p>
+                <p className="text-sm text-muted-foreground mt-2">{t("reviews.by")} {review.profiles?.full_name || t("reviews.anonymous")}</p>
               </CardContent>
             </Card>
           ))}

@@ -6,6 +6,7 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { ShoppingCart } from "lucide-react"
 import { useCart } from "@/lib/use-cart"
+import { useLanguage } from "@/lib/i18n/context"
 import type { CartItem } from "@/lib/cart-slice"
 
 interface ProductCardProps {
@@ -20,6 +21,7 @@ interface ProductCardProps {
 
 export function ProductCard({ id, name, slug, price, compareAtPrice, image, quantity = 1 }: ProductCardProps) {
   const { addToCart } = useCart()
+  const { t } = useLanguage()
   const discount = compareAtPrice ? Math.round(((compareAtPrice - price) / compareAtPrice) * 100) : 0
 
   const handleAddToCart = (e: React.MouseEvent) => {
@@ -74,7 +76,7 @@ export function ProductCard({ id, name, slug, price, compareAtPrice, image, quan
           onClick={handleAddToCart}
         >
           <ShoppingCart className="mr-2 h-4 w-4" />
-          Add to Cart
+          {t("common.addToCart")}
         </Button>
       </CardFooter>
     </Card>

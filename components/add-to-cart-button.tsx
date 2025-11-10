@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { ShoppingCart } from "lucide-react"
 import { useCart } from "@/lib/use-cart"
+import { useLanguage } from "@/lib/i18n/context"
 import type { CartItem } from "@/lib/cart-slice"
 
 interface AddToCartButtonProps {
@@ -20,6 +21,7 @@ interface AddToCartButtonProps {
 
 export function AddToCartButton({ product, quantity = 1, className }: AddToCartButtonProps) {
   const { addToCart } = useCart()
+  const { t } = useLanguage()
 
   const handleAddToCart = () => {
     const cartItem: CartItem = {
@@ -39,7 +41,7 @@ export function AddToCartButton({ product, quantity = 1, className }: AddToCartB
   return (
     <Button onClick={handleAddToCart} className={className}>
       <ShoppingCart className="mr-2 h-4 w-4" />
-      Add to Cart
+      {t("common.addToCart")}
     </Button>
   )
 }

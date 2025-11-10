@@ -5,8 +5,10 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { useState } from "react"
 import { Mail } from "lucide-react"
+import { useLanguage } from "@/lib/i18n/context"
 
 export default function SignUpSuccessPage() {
+  const { t } = useLanguage()
   const [isResending, setIsResending] = useState(false)
   const [resendMessage, setResendMessage] = useState<string | null>(null)
 
@@ -20,7 +22,7 @@ export default function SignUpSuccessPage() {
                     localStorage.getItem("signup_email")
 
       if (!email) {
-        setResendMessage("Email not found. Please sign up again.")
+        setResendMessage(t("auth.emailNotFound"))
         setIsResending(false)
         return
       }
@@ -36,12 +38,12 @@ export default function SignUpSuccessPage() {
       const data = await response.json()
 
       if (!response.ok) {
-        throw new Error(data.error || "Failed to resend email")
+        throw new Error(data.error || t("auth.failedResendEmail"))
       }
 
-      setResendMessage("Verification email sent successfully!")
+      setResendMessage(t("auth.verificationEmailSent"))
     } catch (error) {
-      setResendMessage(error instanceof Error ? error.message : "Failed to resend email")
+      setResendMessage(error instanceof Error ? error.message : t("auth.failedResendEmail"))
     } finally {
       setIsResending(false)
     }
@@ -54,24 +56,24 @@ export default function SignUpSuccessPage() {
           <CardHeader>
             <CardTitle className="text-2xl flex items-center gap-2">
               <Mail className="h-6 w-6 text-primary" />
-              Thank you for signing up!
+              {t("auth.thankYouSignup")}
             </CardTitle>
-            <CardDescription>Check your email to confirm</CardDescription>
+            <CardDescription>{t("auth.checkEmailConfirm")}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="text-sm text-muted-foreground">
-              You&apos;ve successfully signed up. Please check your email to confirm your account before signing in.
+              {t("auth.signupSuccessDesc")}
             </p>
             
             {resendMessage && (
-              <p className={`text-sm ${resendMessage.includes("successfully") ? "text-green-600" : "text-red-500"}`}>
+              <p className={`text-sm ${resendMessage.includes(t("common.success")) || resendMessage.includes("thành công") ? "text-green-600" : "text-red-500"}`}>
                 {resendMessage}
               </p>
             )}
 
             <div className="flex flex-col gap-2">
               <Button asChild className="w-full">
-                <Link href="/auth/login">Go to Login</Link>
+                <Link href="/auth/login">{t("auth.goToLogin")}</Link>
               </Button>
               <Button
                 variant="outline"
@@ -79,7 +81,7 @@ export default function SignUpSuccessPage() {
                 onClick={handleResendEmail}
                 disabled={isResending}
               >
-                {isResending ? "Sending..." : "Resend Verification Email"}
+                {isResending ? t("auth.sending") : t("auth.resendVerificationEmail")}
               </Button>
             </div>
           </CardContent>

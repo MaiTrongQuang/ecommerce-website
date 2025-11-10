@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { useLanguage } from "@/lib/i18n/context"
 import { X } from "lucide-react"
 
 interface Category {
@@ -20,6 +21,7 @@ interface ProductFiltersProps {
 export function ProductFilters({ categories, selectedCategory }: ProductFiltersProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const { t } = useLanguage()
 
   const handleCategoryChange = (categoryId: string) => {
     const params = new URLSearchParams(searchParams.toString())
@@ -44,23 +46,23 @@ export function ProductFilters({ categories, selectedCategory }: ProductFiltersP
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h3 className="font-semibold">Filters</h3>
+        <h3 className="font-semibold">{t("filters.title")}</h3>
         {hasFilters && (
           <Button variant="ghost" size="sm" onClick={clearFilters} className="h-8 px-2">
             <X className="h-4 w-4 mr-1" />
-            Clear
+            {t("filters.clear")}
           </Button>
         )}
       </div>
 
       <div className="space-y-4">
         <div>
-          <h4 className="font-medium mb-3">Category</h4>
+          <h4 className="font-medium mb-3">{t("filters.category")}</h4>
           <RadioGroup value={selectedCategory || "all"} onValueChange={handleCategoryChange}>
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="all" id="all" />
               <Label htmlFor="all" className="cursor-pointer">
-                All Categories
+                {t("products.allCategories")}
               </Label>
             </div>
             {categories.map((category) => (

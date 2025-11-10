@@ -6,6 +6,7 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { useCart } from "@/lib/use-cart"
 import { useAuth } from "@/lib/use-auth"
+import { useLanguage } from "@/lib/i18n/context"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -21,6 +22,7 @@ function CheckoutContent() {
   const router = useRouter()
   const { items, total, clearCart } = useCart()
   const { user } = useAuth()
+  const { t } = useLanguage()
 
   const [isProcessing, setIsProcessing] = useState(false)
   const [paymentMethod, setPaymentMethod] = useState("card")
@@ -61,9 +63,9 @@ function CheckoutContent() {
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-16">
             <ShoppingBag className="h-16 w-16 text-muted-foreground mb-4" />
-            <h2 className="text-xl font-semibold mb-2">Your cart is empty</h2>
-            <p className="text-muted-foreground mb-6">Add items to proceed to checkout</p>
-            <Button onClick={() => router.push("/products")}>Continue Shopping</Button>
+            <h2 className="text-xl font-semibold mb-2">{t("checkout.emptyCart")}</h2>
+            <p className="text-muted-foreground mb-6">{t("checkout.addItemsToProceed")}</p>
+            <Button onClick={() => router.push("/products")}>{t("cart.continueShopping")}</Button>
           </CardContent>
         </Card>
       </div>
@@ -132,11 +134,11 @@ function CheckoutContent() {
       const { order } = await orderResponse.json()
 
       clearCart()
-      toast.success("Order placed successfully!")
+      toast.success(t("checkout.orderPlacedSuccess"))
       router.push(`/account/orders/${order.id}`)
     } catch (error) {
       console.error("[v0] Checkout error:", error)
-      toast.error("Failed to process order. Please try again.")
+      toast.error(t("checkout.failedProcessOrder"))
     } finally {
       setIsProcessing(false)
     }
@@ -145,8 +147,8 @@ function CheckoutContent() {
   return (
     <div className="container py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold tracking-tight">Checkout</h1>
-        <p className="text-muted-foreground mt-2">Complete your order in a few simple steps</p>
+        <h1 className="text-3xl font-bold tracking-tight">{t("checkout.title")}</h1>
+        <p className="text-muted-foreground mt-2">{t("checkout.subtitle")}</p>
       </div>
 
       <form onSubmit={handleSubmit}>
@@ -157,13 +159,13 @@ function CheckoutContent() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Truck className="h-5 w-5" />
-                  Shipping Address
+                  {t("checkout.shippingAddress")}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="fullName">Full Name *</Label>
+                    <Label htmlFor="fullName">{t("checkout.fullName")} *</Label>
                     <Input
                       id="fullName"
                       required
@@ -172,7 +174,7 @@ function CheckoutContent() {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="phone">Phone *</Label>
+                    <Label htmlFor="phone">{t("checkout.phone")} *</Label>
                     <Input
                       id="phone"
                       type="tel"
@@ -184,7 +186,7 @@ function CheckoutContent() {
                 </div>
 
                 <div>
-                  <Label htmlFor="addressLine1">Address Line 1 *</Label>
+                  <Label htmlFor="addressLine1">{t("checkout.addressLine1")} *</Label>
                   <Input
                     id="addressLine1"
                     required
@@ -194,7 +196,7 @@ function CheckoutContent() {
                 </div>
 
                 <div>
-                  <Label htmlFor="addressLine2">Address Line 2</Label>
+                  <Label htmlFor="addressLine2">{t("checkout.addressLine2")}</Label>
                   <Input
                     id="addressLine2"
                     value={shippingAddress.addressLine2}
@@ -204,7 +206,7 @@ function CheckoutContent() {
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div>
-                    <Label htmlFor="city">City *</Label>
+                    <Label htmlFor="city">{t("checkout.city")} *</Label>
                     <Input
                       id="city"
                       required
@@ -213,7 +215,7 @@ function CheckoutContent() {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="state">State *</Label>
+                    <Label htmlFor="state">{t("checkout.state")} *</Label>
                     <Input
                       id="state"
                       required
@@ -222,7 +224,7 @@ function CheckoutContent() {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="postalCode">Postal Code *</Label>
+                    <Label htmlFor="postalCode">{t("checkout.postalCode")} *</Label>
                     <Input
                       id="postalCode"
                       required
@@ -237,7 +239,7 @@ function CheckoutContent() {
             {/* Billing Address */}
             <Card>
               <CardHeader>
-                <CardTitle>Billing Address</CardTitle>
+                <CardTitle>{t("checkout.billingAddress")}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-center space-x-2">
@@ -247,7 +249,7 @@ function CheckoutContent() {
                     onCheckedChange={(checked) => setSameAsBilling(checked as boolean)}
                   />
                   <Label htmlFor="sameAsBilling" className="cursor-pointer">
-                    Same as shipping address
+                    {t("checkout.sameAsShipping")}
                   </Label>
                 </div>
 
@@ -255,7 +257,7 @@ function CheckoutContent() {
                   <>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <Label htmlFor="billingFullName">Full Name *</Label>
+                        <Label htmlFor="billingFullName">{t("checkout.fullName")} *</Label>
                         <Input
                           id="billingFullName"
                           required
@@ -264,7 +266,7 @@ function CheckoutContent() {
                         />
                       </div>
                       <div>
-                        <Label htmlFor="billingPhone">Phone *</Label>
+                        <Label htmlFor="billingPhone">{t("checkout.phone")} *</Label>
                         <Input
                           id="billingPhone"
                           type="tel"
@@ -276,7 +278,7 @@ function CheckoutContent() {
                     </div>
 
                     <div>
-                      <Label htmlFor="billingAddressLine1">Address Line 1 *</Label>
+                      <Label htmlFor="billingAddressLine1">{t("checkout.addressLine1")} *</Label>
                       <Input
                         id="billingAddressLine1"
                         required
@@ -286,7 +288,7 @@ function CheckoutContent() {
                     </div>
 
                     <div>
-                      <Label htmlFor="billingAddressLine2">Address Line 2</Label>
+                      <Label htmlFor="billingAddressLine2">{t("checkout.addressLine2")}</Label>
                       <Input
                         id="billingAddressLine2"
                         value={billingAddress.addressLine2}
@@ -296,7 +298,7 @@ function CheckoutContent() {
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div>
-                        <Label htmlFor="billingCity">City *</Label>
+                        <Label htmlFor="billingCity">{t("checkout.city")} *</Label>
                         <Input
                           id="billingCity"
                           required
@@ -305,7 +307,7 @@ function CheckoutContent() {
                         />
                       </div>
                       <div>
-                        <Label htmlFor="billingState">State *</Label>
+                        <Label htmlFor="billingState">{t("checkout.state")} *</Label>
                         <Input
                           id="billingState"
                           required
@@ -314,7 +316,7 @@ function CheckoutContent() {
                         />
                       </div>
                       <div>
-                        <Label htmlFor="billingPostalCode">Postal Code *</Label>
+                        <Label htmlFor="billingPostalCode">{t("checkout.postalCode")} *</Label>
                         <Input
                           id="billingPostalCode"
                           required
@@ -333,7 +335,7 @@ function CheckoutContent() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <CreditCard className="h-5 w-5" />
-                  Payment Method
+                  {t("checkout.paymentMethod")}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -341,15 +343,15 @@ function CheckoutContent() {
                   <div className="flex items-center space-x-2 p-4 border rounded-lg">
                     <RadioGroupItem value="card" id="card" />
                     <Label htmlFor="card" className="flex-1 cursor-pointer">
-                      <div className="font-medium">Credit / Debit Card</div>
-                      <div className="text-sm text-muted-foreground">Pay securely with your card</div>
+                      <div className="font-medium">{t("checkout.creditDebitCard")}</div>
+                      <div className="text-sm text-muted-foreground">{t("checkout.paySecurely")}</div>
                     </Label>
                   </div>
                   <div className="flex items-center space-x-2 p-4 border rounded-lg">
                     <RadioGroupItem value="paypal" id="paypal" />
                     <Label htmlFor="paypal" className="flex-1 cursor-pointer">
-                      <div className="font-medium">PayPal</div>
-                      <div className="text-sm text-muted-foreground">Pay with your PayPal account</div>
+                      <div className="font-medium">{t("checkout.paypal")}</div>
+                      <div className="text-sm text-muted-foreground">{t("checkout.payWithPaypal")}</div>
                     </Label>
                   </div>
                 </RadioGroup>
@@ -361,7 +363,7 @@ function CheckoutContent() {
           <div className="lg:col-span-1">
             <Card className="sticky top-24">
               <CardHeader>
-                <CardTitle>Order Summary</CardTitle>
+                <CardTitle>{t("checkout.orderSummary")}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
@@ -379,30 +381,30 @@ function CheckoutContent() {
 
                 <div className="space-y-2">
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-muted-foreground">Subtotal</span>
+                    <span className="text-muted-foreground">{t("cart.subtotal")}</span>
                     <span className="font-medium">${subtotal.toFixed(2)}</span>
                   </div>
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-muted-foreground">Shipping</span>
-                    <span className="font-medium">{shipping === 0 ? "FREE" : `$${shipping.toFixed(2)}`}</span>
+                    <span className="text-muted-foreground">{t("cart.shipping")}</span>
+                    <span className="font-medium">{shipping === 0 ? t("checkout.free") : `$${shipping.toFixed(2)}`}</span>
                   </div>
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-muted-foreground">Tax</span>
+                    <span className="text-muted-foreground">{t("cart.tax")}</span>
                     <span className="font-medium">${tax.toFixed(2)}</span>
                   </div>
                   <Separator />
                   <div className="flex items-center justify-between">
-                    <span className="font-semibold">Total</span>
+                    <span className="font-semibold">{t("cart.total")}</span>
                     <span className="font-bold text-xl">${finalTotal.toFixed(2)}</span>
                   </div>
                 </div>
 
                 <Button type="submit" className="w-full" size="lg" disabled={isProcessing}>
-                  {isProcessing ? "Processing..." : "Place Order"}
+                  {isProcessing ? t("checkout.processing") : t("checkout.placeOrder")}
                 </Button>
 
                 <p className="text-xs text-center text-muted-foreground">
-                  By placing your order, you agree to our terms and conditions
+                  {t("checkout.agreeTerms")}
                 </p>
               </CardContent>
             </Card>

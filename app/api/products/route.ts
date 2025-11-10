@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/server"
 import { type NextRequest, NextResponse } from "next/server"
+import { getServerLanguage, getProductOriginFilter } from "@/lib/i18n/server"
 
 export async function GET(request: NextRequest) {
   try {
@@ -14,6 +15,10 @@ export async function GET(request: NextRequest) {
     const limit = Number.parseInt(searchParams.get("limit") || "12")
     const offset = (page - 1) * limit
 
+    // Get language from cookie for filtering products by origin
+    const language = await getServerLanguage()
+    const originFilter = getProductOriginFilter(language)
+
     let query = supabase.from("products").select("*, categories(name, slug)", { count: "exact" }).eq("status", "active")
 
     // Apply filters
@@ -24,6 +29,18 @@ export async function GET(request: NextRequest) {
     if (search) {
       query = query.or(`name.ilike.%${search}%,description.ilike.%${search}%`)
     }
+
+    // Filter by product origin based on language
+    // Note: This requires adding an 'origin' field to products table: 'domestic' | 'foreign' | null
+    // For now, this filter is disabled (getProductOriginFilter returns null)
+    // When origin field is added, uncomment the following:
+    // if (originFilter) {
+    //   query = query.eq("origin", originFilter)
+    // } else {
+    //   // For Vietnamese, show domestic products (or null origin)
+    //   // For English, show foreign products
+    //   query = query.or(`origin.eq.${originFilter},origin.is.null`)
+    // }
 
     // Apply sorting
     query = query.order(sort, { ascending: order === "asc" })
