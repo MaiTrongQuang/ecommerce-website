@@ -1,6 +1,33 @@
 import { createClient } from "@/lib/server"
 import { type NextRequest, NextResponse } from "next/server"
 
+export async function GET() {
+  try {
+    const supabase = await createClient()
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
+
+    const { data, error } = await supabase
+      .from("addresses")
+      .select("*")
+      .eq("user_id", user.id)
+      .order("is_default", { ascending: false })
+      .order("created_at", { ascending: false })
+
+    if (error) throw error
+
+    return NextResponse.json({ addresses: data || [] })
+  } catch (error) {
+    console.error("[v0] Error fetching addresses:", error)
+    return NextResponse.json({ error: "Failed to fetch addresses" }, { status: 500 })
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const supabase = await createClient()

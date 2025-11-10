@@ -31,7 +31,9 @@
     "previous": "Trước",
     "close": "Đóng",
     "of": "của",
-    "showing": "Hiển thị"
+    "showing": "Hiển thị",
+    "saving": "Đang lưu...",
+    "add": "Thêm"
   },
   "home": {
     "welcome": "Chào Mừng Đến Cửa Hàng Yêu Thích Của Bạn",
@@ -230,6 +232,35 @@
     "failedUpdate": "Cập nhật hồ sơ thất bại",
     "backToAccount": "Quay Lại Tài Khoản",
     "emailCannotChange": "Email không thể thay đổi"
+  },
+  "addresses": {
+    "title": "Địa Chỉ Của Tôi",
+    "desc": "Quản lý các địa chỉ giao hàng và thanh toán của bạn",
+    "addNew": "Thêm Địa Chỉ Mới",
+    "noAddresses": "Chưa có địa chỉ nào",
+    "noAddressesDesc": "Thêm địa chỉ đầu tiên của bạn để bắt đầu",
+    "addFirstAddress": "Thêm Địa Chỉ Đầu Tiên",
+    "default": "Mặc Định",
+    "setAsDefault": "Đặt Làm Mặc Định",
+    "editAddress": "Chỉnh Sửa Địa Chỉ",
+    "addAddress": "Thêm Địa Chỉ",
+    "formDesc": "Điền thông tin địa chỉ của bạn",
+    "fullName": "Họ và Tên",
+    "phone": "Số Điện Thoại",
+    "addressLine1": "Địa Chỉ Dòng 1",
+    "addressLine2": "Địa Chỉ Dòng 2",
+    "city": "Thành Phố",
+    "state": "Tỉnh/Thành Phố",
+    "postalCode": "Mã Bưu Điện",
+    "country": "Quốc Gia",
+    "added": "Đã thêm địa chỉ thành công",
+    "updated": "Đã cập nhật địa chỉ thành công",
+    "deleted": "Đã xóa địa chỉ thành công",
+    "saveError": "Lưu địa chỉ thất bại",
+    "deleteError": "Xóa địa chỉ thất bại",
+    "setDefaultError": "Đặt địa chỉ mặc định thất bại",
+    "deleteConfirm": "Xác Nhận Xóa",
+    "deleteConfirmDesc": "Bạn có chắc chắn muốn xóa địa chỉ này? Hành động này không thể hoàn tác."
   },
   "orders": {
     "title": "Đơn Hàng",
