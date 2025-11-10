@@ -5,6 +5,8 @@ import Link from "next/link"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { ShoppingCart } from "lucide-react"
+import { useCart } from "@/lib/use-cart"
+import type { CartItem } from "@/lib/cart-slice"
 
 interface ProductCardProps {
   id: string
@@ -13,11 +15,30 @@ interface ProductCardProps {
   price: number
   compareAtPrice?: number | null
   image: string
-  onAddToCart?: () => void
+  quantity?: number
 }
 
-export function ProductCard({ id, name, slug, price, compareAtPrice, image, onAddToCart }: ProductCardProps) {
+export function ProductCard({ id, name, slug, price, compareAtPrice, image, quantity = 1 }: ProductCardProps) {
+  const { addToCart } = useCart()
   const discount = compareAtPrice ? Math.round(((compareAtPrice - price) / compareAtPrice) * 100) : 0
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    
+    const cartItem: CartItem = {
+      id,
+      product_id: id,
+      name,
+      slug,
+      price,
+      quantity,
+      image: image || "/placeholder.svg?height=400&width=400",
+      stock: quantity, // You might want to fetch actual stock from product data
+    }
+
+    addToCart(cartItem)
+  }
 
   return (
     <Card className="group overflow-hidden transition-all hover:shadow-lg">
@@ -50,10 +71,7 @@ export function ProductCard({ id, name, slug, price, compareAtPrice, image, onAd
       <CardFooter className="p-4 pt-0">
         <Button
           className="w-full"
-          onClick={(e) => {
-            e.preventDefault()
-            onAddToCart?.()
-          }}
+          onClick={handleAddToCart}
         >
           <ShoppingCart className="mr-2 h-4 w-4" />
           Add to Cart

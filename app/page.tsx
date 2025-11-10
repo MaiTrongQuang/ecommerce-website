@@ -156,7 +156,7 @@ export default async function Home() {
                   price={product.price}
                   compareAtPrice={product.compare_at_price}
                   image={product.images?.[0] || "/placeholder.svg?height=400&width=400"}
-                  onAddToCart={() => {}}
+                  quantity={product.quantity || 1}
                 />
               ))}
             </div>
