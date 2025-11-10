@@ -16,13 +16,13 @@ export function CartDrawer() {
 
   return (
     <Sheet open={isOpen} onOpenChange={closeCart}>
-      <SheetContent className="flex flex-col w-full sm:max-w-lg">
-        <SheetHeader>
+      <SheetContent className="flex flex-col w-full sm:max-w-lg p-0">
+        <SheetHeader className="px-6 pt-6 pb-4">
           <SheetTitle>{t("cart.title")} ({items.length})</SheetTitle>
         </SheetHeader>
 
         {items.length === 0 ? (
-          <div className="flex flex-1 flex-col items-center justify-center gap-4">
+          <div className="flex flex-1 flex-col items-center justify-center gap-4 px-6">
             <ShoppingBag className="h-16 w-16 text-muted-foreground" />
             <div className="text-center">
               <h3 className="font-semibold text-lg">{t("cart.empty")}</h3>
@@ -34,16 +34,15 @@ export function CartDrawer() {
           </div>
         ) : (
           <>
-            <ScrollArea className="flex-1 -mx-6 px-6">
-              <div className="space-y-4">
+            <ScrollArea className="flex-1 px-6">
+              <div className="space-y-4 pb-4">
                 {items.map((item) => (
                   <CartItem key={item.product_id} item={item} />
                 ))}
               </div>
             </ScrollArea>
 
-            <div className="space-y-4 pt-4">
-              <Separator />
+            <div className="space-y-4 px-6 pt-4 pb-6 border-t">
               <div className="space-y-2">
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-muted-foreground">{t("cart.subtotal")}</span>
@@ -60,14 +59,14 @@ export function CartDrawer() {
                 </div>
               </div>
 
-              <SheetFooter className="flex-col gap-2 sm:flex-col">
+              <div className="flex flex-col gap-2">
                 <Button className="w-full" size="lg" asChild onClick={closeCart}>
                   <Link href="/checkout">{t("cart.proceedToCheckout")}</Link>
                 </Button>
                 <Button variant="outline" className="w-full bg-transparent" onClick={closeCart} asChild>
                   <Link href="/cart">{t("cart.title")}</Link>
                 </Button>
-              </SheetFooter>
+              </div>
             </div>
           </>
         )}

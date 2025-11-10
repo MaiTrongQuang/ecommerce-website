@@ -26,7 +26,7 @@ export function useCartSync() {
           price: item.products.price,
           quantity: item.quantity,
           image: item.products.images[0] || "/placeholder.svg?height=400&width=400",
-          stock: item.products.stock,
+          stock: item.products.quantity || 0, // Map quantity field to stock
         }))
 
         dispatch(setCartItems(cartItems))

@@ -23,7 +23,7 @@ export async function GET() {
           slug,
           price,
           images,
-          quantity as stock
+          quantity
         )
       `)
       .eq("user_id", user.id)

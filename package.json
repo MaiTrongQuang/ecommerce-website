@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "check-tables": "node scripts/check-tables.js"
+    "check-tables": "node scripts/check-tables.js",
+    "seed-products": "node scripts/seed-vietnamese-products.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

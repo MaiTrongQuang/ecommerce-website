@@ -14,12 +14,23 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json()
 
+    // Map only the fields we need, ensuring correct column names
+    const addressData = {
+      user_id: user.id,
+      full_name: body.full_name || body.fullName || "",
+      phone: body.phone || "",
+      address_line1: body.address_line1 || body.addressLine1 || "",
+      address_line2: body.address_line2 || body.addressLine2 || null,
+      city: body.city || "",
+      state: body.state || "",
+      postal_code: body.postal_code || body.postalCode || "",
+      country: body.country || "VN",
+      is_default: body.is_default || body.isDefault || false,
+    }
+
     const { data, error } = await supabase
       .from("addresses")
-      .insert({
-        user_id: user.id,
-        ...body,
-      })
+      .insert(addressData)
       .select()
       .single()
 
