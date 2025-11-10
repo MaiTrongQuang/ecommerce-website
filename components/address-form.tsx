@@ -8,19 +8,7 @@ import { Label } from "@/components/ui/label"
 import { useLanguage } from "@/lib/i18n/context"
 import { X } from "lucide-react"
 import { toast } from "sonner"
-
-interface Address {
-  id: string
-  full_name: string
-  phone: string
-  address_line1: string
-  address_line2: string | null
-  city: string
-  state: string
-  postal_code: string
-  country: string
-  is_default: boolean
-}
+import type { Address } from "@/lib/types/address"
 
 interface AddressFormProps {
   address?: Address

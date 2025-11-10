@@ -21,21 +21,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-
-interface Address {
-  id: string
-  full_name: string
-  phone: string
-  address_line1: string
-  address_line2: string | null
-  city: string
-  state: string
-  postal_code: string
-  country: string
-  is_default: boolean
-  created_at: string
-  updated_at: string
-}
+import type { Address } from "@/lib/types/address"
 
 interface AddressesContentProps {
   addresses: Address[]

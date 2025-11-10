@@ -65,6 +65,14 @@ export default async function ProductsPage({
 
   const totalPages = Math.ceil((count || 0) / limit)
 
+  // Convert SearchParams to Record<string, string | undefined>
+  const searchParamsRecord: Record<string, string | undefined> = {
+    ...(params.category && { category: params.category }),
+    ...(params.search && { search: params.search }),
+    ...(params.sort && { sort: params.sort }),
+    ...(params.page && { page: params.page }),
+  }
+
   return (
     <ProductsContent
       products={products || []}
@@ -76,7 +84,7 @@ export default async function ProductsPage({
       limit={limit}
       selectedCategory={category}
       currentSort={sort}
-      searchParams={params}
+      searchParams={searchParamsRecord}
     />
   )
 }
