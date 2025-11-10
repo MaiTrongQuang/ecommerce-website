@@ -33,7 +33,15 @@
     "of": "của",
     "showing": "Hiển thị",
     "saving": "Đang lưu...",
-    "add": "Thêm"
+    "add": "Thêm",
+    "changeLanguage": "Thay đổi ngôn ngữ",
+    "goToPreviousPage": "Đi đến trang trước",
+    "goToNextPage": "Đi đến trang sau",
+    "morePages": "Thêm trang",
+    "unauthorized": "Không được phép",
+    "forbidden": "Bị cấm",
+    "notFound": "Không tìm thấy",
+    "serverError": "Lỗi máy chủ"
   },
   "home": {
     "welcome": "Chào Mừng Đến Cửa Hàng Yêu Thích Của Bạn",
@@ -184,6 +192,7 @@
     "signup": "Đăng Ký",
     "signupDesc": "Tạo tài khoản mới",
     "fullName": "Họ và Tên",
+    "fullNamePlaceholder": "Nguyễn Văn A",
     "confirmPassword": "Xác Nhận Mật Khẩu",
     "signingUp": "Đang đăng ký...",
     "creatingAccount": "Đang tạo tài khoản...",
@@ -202,7 +211,11 @@
     "failedResendEmail": "Gửi lại email thất bại",
     "goToLogin": "Đi Đến Đăng Nhập",
     "sending": "Đang gửi...",
-    "resendVerificationEmail": "Gửi Lại Email Xác Nhận"
+    "resendVerificationEmail": "Gửi Lại Email Xác Nhận",
+    "invalidCredentials": "Email hoặc mật khẩu không đúng",
+    "emailNotConfirmed": "Vui lòng xác nhận email trước khi đăng nhập",
+    "accountCreated": "Tạo tài khoản thành công",
+    "checkEmail": "Vui lòng kiểm tra email để xác nhận tài khoản"
   },
   "account": {
     "title": "Tài Khoản Của Tôi",
@@ -272,21 +285,34 @@
     "orderDate": "Ngày Đặt Hàng",
     "orderStatus": "Trạng Thái Đơn Hàng",
     "shippingAddress": "Địa Chỉ Giao Hàng",
+    "billingAddress": "Địa Chỉ Thanh Toán",
     "items": "Mặt Hàng",
     "quantity": "Số Lượng",
     "price": "Giá",
+    "subtotal": "Tạm Tính",
+    "shipping": "Vận Chuyển",
+    "tax": "Thuế",
+    "total": "Tổng Cộng",
     "viewAndTrack": "Xem và theo dõi đơn hàng của bạn",
     "startShopping": "Bắt đầu mua sắm để xem đơn hàng của bạn ở đây",
     "backToOrders": "Quay Lại Đơn Hàng",
     "placedOn": "Đặt vào",
     "orderItems": "Mặt Hàng Trong Đơn",
     "paymentStatus": "Trạng Thái Thanh Toán",
+    "paymentMethod": "Phương Thức Thanh Toán",
+    "notes": "Ghi Chú",
     "status": {
       "pending": "Đang Chờ",
       "processing": "Đang Xử Lý",
       "shipped": "Đã Gửi Hàng",
       "delivered": "Đã Giao",
       "cancelled": "Đã Hủy"
+    },
+    "paymentStatusLabels": {
+      "pending": "Đang Chờ",
+      "paid": "Đã Thanh Toán",
+      "failed": "Thất Bại",
+      "refunded": "Đã Hoàn Tiền"
     }
   },
   "userMenu": {

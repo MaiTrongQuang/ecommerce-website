@@ -87,7 +87,7 @@ export default function SignUpPage() {
                   <Input
                     id="fullName"
                     type="text"
-                    placeholder="John Doe"
+                    placeholder={t("auth.fullNamePlaceholder")}
                     required
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}

@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button"
 import { Globe } from "lucide-react"
 
 export function LanguageSwitcher() {
-  const { language, setLanguage } = useLanguage()
+  const { language, setLanguage, t } = useLanguage()
   const currentLang = languages.find((l) => l.code === language) || languages[0]
 
   return (
@@ -20,7 +20,7 @@ export function LanguageSwitcher() {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon" className="relative">
           <span className="text-xl">{currentLang.flag}</span>
-          <span className="sr-only">Change language</span>
+          <span className="sr-only">{t("common.changeLanguage")}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">

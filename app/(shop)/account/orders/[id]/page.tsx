@@ -9,6 +9,9 @@ import { ArrowLeft, Package, Truck, CheckCircle } from "lucide-react"
 import Image from "next/image"
 import { getServerLanguage } from "@/lib/i18n/server"
 import { t } from "@/lib/i18n"
+import type { Database } from "@/lib/database"
+
+type OrderItem = Database["public"]["Tables"]["order_items"]["Row"]
 
 export default async function OrderDetailPage({
   params,
@@ -89,9 +92,9 @@ export default async function OrderDetailPage({
                 <CardTitle>{t(lang, "orders.orderItems")}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                {order.order_items.map((item: any) => (
+                {order.order_items.map((item: OrderItem) => (
                   <div key={item.id} className="flex gap-4">
-                    <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-md bg-muted">
+                    <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-md bg-muted">
                       <Image
                         src={item.product_image || "/placeholder.svg"}
                         alt={item.product_name}
@@ -169,8 +172,8 @@ export default async function OrderDetailPage({
                   </div>
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">{t(lang, "orders.paymentStatus")}</span>
-                    <Badge variant="outline" className="capitalize">
-                      {order.payment_status}
+                    <Badge variant="outline">
+                      {t(lang, `orders.paymentStatusLabels.${order.payment_status}`) || order.payment_status}
                     </Badge>
                   </div>
                 </div>

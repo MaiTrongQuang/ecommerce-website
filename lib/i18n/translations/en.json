@@ -33,7 +33,15 @@
     "of": "of",
     "showing": "Showing",
     "saving": "Saving...",
-    "add": "Add"
+    "add": "Add",
+    "changeLanguage": "Change language",
+    "goToPreviousPage": "Go to previous page",
+    "goToNextPage": "Go to next page",
+    "morePages": "More pages",
+    "unauthorized": "Unauthorized",
+    "forbidden": "Forbidden",
+    "notFound": "Not Found",
+    "serverError": "Server Error"
   },
   "home": {
     "welcome": "Welcome to Your Favorite Store",
@@ -184,6 +192,7 @@
     "signup": "Sign up",
     "signupDesc": "Create a new account",
     "fullName": "Full Name",
+    "fullNamePlaceholder": "John Doe",
     "confirmPassword": "Confirm Password",
     "signingUp": "Signing up...",
     "creatingAccount": "Creating account...",
@@ -202,7 +211,11 @@
     "failedResendEmail": "Failed to resend email",
     "goToLogin": "Go to Login",
     "sending": "Sending...",
-    "resendVerificationEmail": "Resend Verification Email"
+    "resendVerificationEmail": "Resend Verification Email",
+    "invalidCredentials": "Invalid email or password",
+    "emailNotConfirmed": "Please verify your email before signing in",
+    "accountCreated": "Account created successfully",
+    "checkEmail": "Please check your email to verify your account"
   },
   "account": {
     "title": "My Account",
@@ -272,21 +285,34 @@
     "orderDate": "Order Date",
     "orderStatus": "Order Status",
     "shippingAddress": "Shipping Address",
+    "billingAddress": "Billing Address",
     "items": "Items",
     "quantity": "Quantity",
     "price": "Price",
+    "subtotal": "Subtotal",
+    "shipping": "Shipping",
+    "tax": "Tax",
+    "total": "Total",
     "viewAndTrack": "View and track your orders",
     "startShopping": "Start shopping to see your orders here",
     "backToOrders": "Back to Orders",
     "placedOn": "Placed on",
     "orderItems": "Order Items",
     "paymentStatus": "Payment Status",
+    "paymentMethod": "Payment Method",
+    "notes": "Notes",
     "status": {
       "pending": "Pending",
       "processing": "Processing",
       "shipped": "Shipped",
       "delivered": "Delivered",
       "cancelled": "Cancelled"
+    },
+    "paymentStatusLabels": {
+      "pending": "Pending",
+      "paid": "Paid",
+      "failed": "Failed",
+      "refunded": "Refunded"
     }
   },
   "userMenu": {
