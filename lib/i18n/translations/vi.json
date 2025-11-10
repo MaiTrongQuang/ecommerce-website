@@ -60,7 +60,10 @@
     "priceAsc": "Giá (Thấp đến Cao)",
     "priceDesc": "Giá (Cao đến Thấp)",
     "newest": "Mới Nhất",
-    "oldest": "Cũ Nhất"
+    "oldest": "Cũ Nhất",
+    "items": "sản phẩm",
+    "page": "Trang",
+    "pages": "trang"
   },
   "product": {
     "description": "Mô Tả",

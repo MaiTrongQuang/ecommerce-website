@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "eslint .",
     "check-tables": "node scripts/check-tables.js",
-    "seed-products": "node scripts/seed-vietnamese-products.js"
+    "seed-products": "node scripts/seed-vietnamese-products.js",
+    "seed-categories": "node scripts/seed-categories.js",
+    "update-product-categories": "node scripts/update-product-categories.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

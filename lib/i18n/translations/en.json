@@ -60,7 +60,10 @@
     "priceAsc": "Price (Low to High)",
     "priceDesc": "Price (High to Low)",
     "newest": "Newest",
-    "oldest": "Oldest"
+    "oldest": "Oldest",
+    "items": "items",
+    "page": "Page",
+    "pages": "pages"
   },
   "product": {
     "description": "Description",

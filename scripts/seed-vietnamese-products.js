@@ -42,6 +42,7 @@ const vietnameseProducts = [
   {
     name: "Áo Dài Truyền Thống",
     slug: "ao-dai-truyen-thong",
+    category_slug: "trang-phuc-truyen-thong",
     description: "Áo dài truyền thống Việt Nam với chất liệu lụa cao cấp, thiết kế tinh tế và thanh lịch. Phù hợp cho các dịp lễ tết, cưới hỏi và sự kiện quan trọng.",
     price: 850000,
     compare_at_price: 1200000,
@@ -56,6 +57,7 @@ const vietnameseProducts = [
   {
     name: "Áo Dài Cách Tân",
     slug: "ao-dai-cach-tan",
+    category_slug: "trang-phuc-truyen-thong",
     description: "Áo dài cách tân hiện đại, kết hợp giữa truyền thống và phong cách thời trang hiện đại. Thoải mái và phong cách cho mọi dịp.",
     price: 650000,
     compare_at_price: 950000,
@@ -72,6 +74,7 @@ const vietnameseProducts = [
   {
     name: "Nón Lá Việt Nam",
     slug: "non-la-viet-nam",
+    category_slug: "trang-phuc-truyen-thong",
     description: "Nón lá truyền thống Việt Nam được làm thủ công từ lá cọ, bền đẹp và mát mẻ. Biểu tượng văn hóa Việt Nam.",
     price: 150000,
     compare_at_price: 200000,
@@ -88,6 +91,7 @@ const vietnameseProducts = [
   {
     name: "Cà Phê Robusta Đắk Lắk",
     slug: "ca-phe-robusta-dak-lak",
+    category_slug: "ca-phe-tra",
     description: "Cà phê Robusta nguyên chất từ Đắk Lắk, hương vị đậm đà đặc trưng. Đóng gói 500g, rang xay thủ công.",
     price: 180000,
     compare_at_price: 250000,
@@ -102,6 +106,7 @@ const vietnameseProducts = [
   {
     name: "Cà Phê Arabica Cầu Đất",
     slug: "ca-phe-arabica-cau-dat",
+    category_slug: "ca-phe-tra",
     description: "Cà phê Arabica cao cấp từ Cầu Đất, Đà Lạt. Hương vị thơm ngon, chua thanh đặc trưng. Đóng gói 500g.",
     price: 320000,
     compare_at_price: 420000,
@@ -116,6 +121,7 @@ const vietnameseProducts = [
   {
     name: "Cà Phê Phin Truyền Thống",
     slug: "ca-phe-phin-truyen-thong",
+    category_slug: "ca-phe-tra",
     description: "Bộ cà phê phin truyền thống Việt Nam gồm phin inox và cốc thủy tinh. Pha cà phê đậm đà theo cách Việt Nam.",
     price: 120000,
     compare_at_price: 180000,
@@ -132,6 +138,7 @@ const vietnameseProducts = [
   {
     name: "Trà Shan Tuyết Cổ Thụ",
     slug: "tra-shan-tuyet-co-thu",
+    category_slug: "ca-phe-tra",
     description: "Trà Shan Tuyết cổ thụ từ vùng núi Tây Bắc, hương vị đặc biệt, tốt cho sức khỏe. Đóng gói 200g.",
     price: 450000,
     compare_at_price: 600000,
@@ -146,6 +153,7 @@ const vietnameseProducts = [
   {
     name: "Trà Ô Long Mộc Châu",
     slug: "tra-o-long-moc-chau",
+    category_slug: "ca-phe-tra",
     description: "Trà Ô Long cao cấp từ Mộc Châu, hương thơm tự nhiên, vị ngọt thanh. Đóng gói 250g.",
     price: 280000,
     compare_at_price: 380000,
@@ -162,6 +170,7 @@ const vietnameseProducts = [
   {
     name: "Bộ Ấm Chén Gốm Bát Tràng",
     slug: "bo-am-chen-gom-bat-trang",
+    category_slug: "gom-su-do-gia-dung",
     description: "Bộ ấm chén gốm Bát Tràng truyền thống, được làm thủ công tinh xảo. Thiết kế cổ điển, chất lượng cao.",
     price: 550000,
     compare_at_price: 750000,
@@ -176,6 +185,7 @@ const vietnameseProducts = [
   {
     name: "Lọ Hoa Gốm Sứ Bát Tràng",
     slug: "lo-hoa-gom-su-bat-trang",
+    category_slug: "gom-su-do-gia-dung",
     description: "Lọ hoa gốm sứ Bát Tràng với hoa văn tinh xảo, phù hợp trang trí nội thất. Kích thước 30cm.",
     price: 380000,
     compare_at_price: 520000,
@@ -192,6 +202,7 @@ const vietnameseProducts = [
   {
     name: "Tranh Thêu Tay Hà Đông",
     slug: "tranh-theu-tay-ha-dong",
+    category_slug: "thu-cong-my-nghe",
     description: "Tranh thêu tay truyền thống Hà Đông, tinh xảo và đẹp mắt. Kích thước 40x50cm, khung gỗ tự nhiên.",
     price: 1200000,
     compare_at_price: 1800000,
@@ -206,6 +217,7 @@ const vietnameseProducts = [
   {
     name: "Túi Xách Lá Cọ",
     slug: "tui-xach-la-co",
+    category_slug: "thu-cong-my-nghe",
     description: "Túi xách được đan từ lá cọ tự nhiên, thân thiện môi trường và độc đáo. Kích thước vừa, phù hợp đi chợ, đi biển.",
     price: 250000,
     compare_at_price: 350000,
@@ -222,6 +234,7 @@ const vietnameseProducts = [
   {
     name: "Bánh Tráng Nướng Đà Lạt",
     slug: "banh-trang-nuong-da-lat",
+    category_slug: "do-an-vat-dac-san",
     description: "Bánh tráng nướng Đà Lạt đặc sản, giòn tan, thơm ngon. Gói 10 cái, bảo quản tốt.",
     price: 45000,
     compare_at_price: 60000,
@@ -236,6 +249,7 @@ const vietnameseProducts = [
   {
     name: "Kẹo Dừa Bến Tre",
     slug: "keo-dua-ben-tre",
+    category_slug: "do-an-vat-dac-san",
     description: "Kẹo dừa Bến Tre truyền thống, ngọt thanh tự nhiên từ dừa tươi. Hộp 500g.",
     price: 85000,
     compare_at_price: 120000,
@@ -250,6 +264,7 @@ const vietnameseProducts = [
   {
     name: "Mứt Dừa Bến Tre",
     slug: "mut-dua-ben-tre",
+    category_slug: "do-an-vat-dac-san",
     description: "Mứt dừa Bến Tre thơm ngon, được làm từ dừa tươi nguyên chất. Hộp 400g.",
     price: 95000,
     compare_at_price: 130000,
@@ -266,6 +281,7 @@ const vietnameseProducts = [
   {
     name: "Tượng Gỗ Tâm Linh",
     slug: "tuong-go-tam-linh",
+    category_slug: "do-luu-niem",
     description: "Tượng gỗ tâm linh được chạm khắc thủ công, mang ý nghĩa phong thủy. Kích thước 20cm.",
     price: 680000,
     compare_at_price: 950000,
@@ -280,6 +296,7 @@ const vietnameseProducts = [
   {
     name: "Vòng Tay Tre Nứa",
     slug: "vong-tay-tre-nua",
+    category_slug: "do-luu-niem",
     description: "Vòng tay được làm từ tre nứa tự nhiên, thiết kế đơn giản và thanh lịch. Phù hợp mọi lứa tuổi.",
     price: 120000,
     compare_at_price: 180000,
@@ -296,6 +313,7 @@ const vietnameseProducts = [
   {
     name: "Chiếu Cói Truyền Thống",
     slug: "chieu-coi-truyen-thong",
+    category_slug: "gom-su-do-gia-dung",
     description: "Chiếu cói truyền thống Việt Nam, mát mẻ và thoáng khí. Kích thước 1.2x2m, phù hợp giường đôi.",
     price: 420000,
     compare_at_price: 580000,
@@ -310,6 +328,7 @@ const vietnameseProducts = [
   {
     name: "Rổ Tre Đan Thủ Công",
     slug: "ro-tre-dan-thu-cong",
+    category_slug: "gom-su-do-gia-dung",
     description: "Rổ tre được đan thủ công, bền đẹp và thân thiện môi trường. Kích thước vừa, đa dụng.",
     price: 180000,
     compare_at_price: 250000,
@@ -326,6 +345,7 @@ const vietnameseProducts = [
   {
     name: "Nước Mắm Phú Quốc",
     slug: "nuoc-mam-phu-quoc",
+    category_slug: "do-uong",
     description: "Nước mắm Phú Quốc nguyên chất, đậm đà hương vị biển. Chai 500ml, chất lượng cao cấp.",
     price: 125000,
     compare_at_price: 180000,
@@ -340,6 +360,7 @@ const vietnameseProducts = [
   {
     name: "Rượu Nếp Cẩm",
     slug: "ruou-nep-cam",
+    category_slug: "do-uong",
     description: "Rượu nếp cẩm truyền thống, ngọt thanh và thơm ngon. Chai 500ml, phù hợp làm quà.",
     price: 180000,
     compare_at_price: 250000,
@@ -414,6 +435,26 @@ async function seedProducts() {
     process.exit(1)
   }
 
+  // Fetch all categories to map category slugs to IDs
+  console.log('📂 Fetching categories...')
+  const { data: categories, error: categoriesError } = await supabase
+    .from('categories')
+    .select('id, slug')
+
+  if (categoriesError) {
+    console.error('⚠️  Warning: Could not fetch categories:', categoriesError.message)
+    console.error('   Products will be created without category assignment')
+  } else {
+    console.log(`✅ Found ${categories?.length || 0} categories\n`)
+  }
+
+  const categoryMap = {}
+  if (categories) {
+    categories.forEach(cat => {
+      categoryMap[cat.slug] = cat.id
+    })
+  }
+
   let successCount = 0
   let errorCount = 0
 
@@ -436,10 +477,19 @@ async function seedProducts() {
         continue
       }
 
+      // Map category_slug to category_id
+      const productData = { ...product }
+      if (product.category_slug && categoryMap[product.category_slug]) {
+        productData.category_id = categoryMap[product.category_slug]
+        delete productData.category_slug
+      } else if (product.category_slug) {
+        console.log(`⚠️  Category "${product.category_slug}" not found for "${product.name}"`)
+      }
+
       // Insert product
       const { data, error } = await supabase
         .from('products')
-        .insert(product)
+        .insert(productData)
         .select()
         .single()
 

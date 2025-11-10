@@ -3,7 +3,7 @@
 import { ProductCard } from "@/components/product-card"
 import { ProductFilters } from "@/components/product-filters"
 import { ProductSort } from "@/components/product-sort"
-import { Pagination } from "@/components/ui/pagination"
+import { Pagination } from "@/components/pagination"
 import { useLanguage } from "@/lib/i18n/context"
 
 interface ProductsContentProps {
@@ -49,7 +49,16 @@ export function ProductsContent({
       <div className="mb-8">
         <h1 className="text-3xl font-bold tracking-tight">{t("products.title")}</h1>
         <p className="text-muted-foreground mt-2">
-          {t("products.title")}: {count} {t("products.title").toLowerCase()}
+          {count > 0 ? (
+            <>
+              {t("common.showing")} {offset + 1}-{Math.min(offset + limit, count)} {t("common.of")} {count} {t("products.items")}
+              {totalPages > 1 && (
+                <> • {t("products.page")} {page} {t("common.of")} {totalPages}</>
+              )}
+            </>
+          ) : (
+            t("products.noProducts")
+          )}
         </p>
       </div>
 
@@ -61,11 +70,10 @@ export function ProductsContent({
 
         {/* Products Grid */}
         <div className="flex-1">
-          <div className="flex items-center justify-between mb-6">
-            <p className="text-sm text-muted-foreground">
-              {t("common.showing")} {offset + 1}-{Math.min(offset + limit, count)} {t("common.of")} {count} {t("products.title").toLowerCase()}
-            </p>
-            <ProductSort currentSort={currentSort} />
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+            <div className="flex items-center gap-4">
+              <ProductSort currentSort={currentSort} />
+            </div>
           </div>
 
           {products && products.length > 0 ? (
@@ -85,7 +93,7 @@ export function ProductsContent({
                 ))}
               </div>
 
-              {totalPages > 1 && (
+              {totalPages > 0 && (
                 <div className="mt-8">
                   <Pagination currentPage={page} totalPages={totalPages} baseUrl="/products" searchParams={searchParams} />
                 </div>
