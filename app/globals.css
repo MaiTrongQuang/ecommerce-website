@@ -130,6 +130,14 @@
   body {
     @apply bg-background text-foreground;
   }
+  button,
+  a {
+    cursor: pointer;
+  }
+  button:disabled,
+  a[aria-disabled="true"] {
+    cursor: not-allowed;
+  }
 }
 
 @layer utilities {
