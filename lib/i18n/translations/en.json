@@ -306,5 +306,20 @@
     "faq": "FAQ",
     "shippingInfo": "Shipping Info",
     "copyright": "All rights reserved."
+  },
+  "deals": {
+    "title": "Special Deals",
+    "subtitle": "Discover amazing offers and save with exclusive promotions",
+    "activeDeals": "active deals",
+    "noDeals": "No deals available",
+    "noDealsDesc": "Check back later for the latest offers!",
+    "endsIn": "Ends in",
+    "minPurchase": "Min purchase",
+    "off": "off",
+    "productsInDeal": "Products in deal",
+    "noProducts": "No products in this deal",
+    "viewAll": "View All",
+    "expired": "Expired",
+    "comingSoon": "Coming Soon"
   }
 }

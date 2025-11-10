@@ -310,6 +310,62 @@ export interface Database {
           updated_at?: string
         }
       }
+      deals: {
+        Row: {
+          id: string
+          title: string
+          description: string | null
+          discount_percentage: number
+          discount_amount: number | null
+          start_date: string
+          end_date: string
+          status: "draft" | "active" | "expired" | "archived"
+          image_url: string | null
+          banner_image_url: string | null
+          product_ids: string[] | null
+          category_ids: string[] | null
+          min_purchase_amount: number | null
+          max_discount_amount: number | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          title: string
+          description?: string | null
+          discount_percentage: number
+          discount_amount?: number | null
+          start_date: string
+          end_date: string
+          status?: "draft" | "active" | "expired" | "archived"
+          image_url?: string | null
+          banner_image_url?: string | null
+          product_ids?: string[] | null
+          category_ids?: string[] | null
+          min_purchase_amount?: number | null
+          max_discount_amount?: number | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          title?: string
+          description?: string | null
+          discount_percentage?: number
+          discount_amount?: number | null
+          start_date?: string
+          end_date?: string
+          status?: "draft" | "active" | "expired" | "archived"
+          image_url?: string | null
+          banner_image_url?: string | null
+          product_ids?: string[] | null
+          category_ids?: string[] | null
+          min_purchase_amount?: number | null
+          max_discount_amount?: number | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
     }
   }
 }

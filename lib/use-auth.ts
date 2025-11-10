@@ -4,12 +4,15 @@ import { createClient } from "@/lib/client"
 import type { User } from "@supabase/supabase-js"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
+import { useAppDispatch } from "@/lib/hooks"
+import { clearCart } from "@/lib/cart-slice"
 
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
   const router = useRouter()
   const supabase = createClient()
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
     // Get initial session
@@ -32,17 +35,22 @@ export function useAuth() {
 
   const signOut = async () => {
     try {
-      // Option 1: Use API route (for server-side logging/monitoring)
+      // Clear cart from Redux store first
+      dispatch(clearCart())
+      
+      // Use API route to clear cart from database and sign out
       await fetch("/api/auth/logout", { method: "POST" })
       
-      // Option 2: Direct client-side sign out (faster, recommended)
+      // Direct client-side sign out as fallback
       await supabase.auth.signOut()
       
+      // Redirect to home page
       router.push("/")
       router.refresh()
     } catch (error) {
       console.error("Error signing out:", error)
-      // Fallback: try direct sign out
+      // Fallback: clear cart and try direct sign out
+      dispatch(clearCart())
       await supabase.auth.signOut()
       router.push("/")
       router.refresh()

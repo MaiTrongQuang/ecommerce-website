@@ -306,5 +306,20 @@
     "faq": "Câu Hỏi Thường Gặp",
     "shippingInfo": "Thông Tin Vận Chuyển",
     "copyright": "Bảo lưu mọi quyền."
+  },
+  "deals": {
+    "title": "Ưu Đãi Đặc Biệt",
+    "subtitle": "Khám phá những ưu đãi tuyệt vời và tiết kiệm với các chương trình khuyến mãi độc quyền",
+    "activeDeals": "ưu đãi đang diễn ra",
+    "noDeals": "Hiện chưa có ưu đãi nào",
+    "noDealsDesc": "Hãy quay lại sau để xem các ưu đãi mới nhất!",
+    "endsIn": "Kết thúc sau",
+    "minPurchase": "Mua tối thiểu",
+    "off": "giảm",
+    "productsInDeal": "Sản phẩm trong ưu đãi",
+    "noProducts": "Chưa có sản phẩm nào trong ưu đãi này",
+    "viewAll": "Xem Tất Cả",
+    "expired": "Đã hết hạn",
+    "comingSoon": "Sắp diễn ra"
   }
 }
