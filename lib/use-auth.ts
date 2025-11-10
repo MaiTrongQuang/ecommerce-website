@@ -31,9 +31,22 @@ export function useAuth() {
   }, [supabase, router])
 
   const signOut = async () => {
-    await supabase.auth.signOut()
-    router.push("/")
-    router.refresh()
+    try {
+      // Option 1: Use API route (for server-side logging/monitoring)
+      await fetch("/api/auth/logout", { method: "POST" })
+      
+      // Option 2: Direct client-side sign out (faster, recommended)
+      await supabase.auth.signOut()
+      
+      router.push("/")
+      router.refresh()
+    } catch (error) {
+      console.error("Error signing out:", error)
+      // Fallback: try direct sign out
+      await supabase.auth.signOut()
+      router.push("/")
+      router.refresh()
+    }
   }
 
   return {
