@@ -28,7 +28,7 @@ export default async function HomePage() {
   const { data: products } = await productsQuery
 
   // Fetch categories
-  const { data: categories } = await supabase.from("categories").select("*").limit(6)
+  const { data: categories } = await supabase.from("categories").select("*, slug").limit(6)
 
   return <HomeContent products={products || []} categories={categories || []} />
 }

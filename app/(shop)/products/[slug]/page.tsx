@@ -10,6 +10,7 @@ export default async function ProductDetailPage({
   const { slug } = await params
   const supabase = await createClient()
 
+  console.log("Fetching product with slug:", slug)
   const { data: product, error } = await supabase
     .from("products")
     .select(
@@ -21,14 +22,23 @@ export default async function ProductDetailPage({
         rating,
         title,
         comment,
-        created_at,
-        profiles(full_name)
+        created_at
       )
     `,
     )
     .eq("slug", slug)
     .eq("status", "active")
     .single()
+
+  if (error) {
+    console.error("Error fetching product:", error)
+  }
+  
+  if (product) {
+    console.log("Product found:", product.id)
+  } else {
+    console.log("Product not found")
+  }
 
   if (error || !product) {
     notFound()

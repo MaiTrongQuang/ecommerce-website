@@ -84,7 +84,8 @@ export function SiteFooter() {
         </div>
 
         <div className="mt-8 border-t pt-8 text-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} {t("common.store")}. {t("footer.copyright")}</p>
+          <p>&copy; {new Date().getFullYear()} Mai Trọng Quang. {t("footer.copyright")}</p>
+          <p className="mt-2">Developed by Mai Trọng Quang</p>
         </div>
       </div>
     </footer>

@@ -18,7 +18,7 @@ interface AddToCartButtonProps {
   className?: string
 }
 
-export function AddToCartButton({ product, className }: AddToCartButtonProps) {
+export function AddToCartButton({ product, quantity = 1, className }: AddToCartButtonProps & { quantity?: number }) {
   const { addToCart } = useCart()
   const { t } = useLanguage()
 
@@ -29,7 +29,7 @@ export function AddToCartButton({ product, className }: AddToCartButtonProps) {
       name: product.name,
       slug: product.slug,
       price: product.price,
-      quantity: 1, // Always add 1 item at a time
+      quantity: quantity,
       image: product.images[0] || "/placeholder.svg?height=400&width=400",
       stock: product.quantity,
     }
@@ -38,9 +38,9 @@ export function AddToCartButton({ product, className }: AddToCartButtonProps) {
   }
 
   return (
-    <Button onClick={handleAddToCart} className={className}>
+    <Button onClick={handleAddToCart} className={className} disabled={product.quantity === 0}>
       <ShoppingCart className="mr-2 h-4 w-4" />
-      {t("common.addToCart")}
+      {product.quantity === 0 ? t("common.outOfStock") : t("common.addToCart")}
     </Button>
   )
 }

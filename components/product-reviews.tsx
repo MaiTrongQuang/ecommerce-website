@@ -20,7 +20,7 @@ interface Review {
   title: string | null
   comment: string | null
   created_at: string
-  profiles: {
+  profiles?: {
     full_name: string | null
   }
 }
