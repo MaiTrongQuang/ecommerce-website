@@ -347,5 +347,32 @@
     "viewAll": "Xem Tất Cả",
     "expired": "Đã hết hạn",
     "comingSoon": "Sắp diễn ra"
+  },
+  "contact": {
+    "title": "Liên Hệ Với Chúng Tôi",
+    "subtitle": "Chúng tôi rất muốn nghe từ bạn. Gửi tin nhắn cho chúng tôi và chúng tôi sẽ phản hồi sớm nhất có thể.",
+    "form": {
+      "name": "Tên",
+      "email": "Email",
+      "subject": "Chủ đề",
+      "message": "Tin nhắn",
+      "send": "Gửi Tin Nhắn",
+      "success": "Tin nhắn đã được gửi thành công!",
+      "error": "Gửi tin nhắn thất bại."
+    },
+    "info": {
+      "address": "Địa chỉ",
+      "phone": "Điện thoại",
+      "email": "Email",
+      "hours": "Giờ làm việc"
+    }
+  },
+  "faq": {
+    "title": "Câu Hỏi Thường Gặp",
+    "subtitle": "Tìm câu trả lời cho các câu hỏi phổ biến về sản phẩm, vận chuyển và đổi trả."
+  },
+  "shipping": {
+    "title": "Thông Tin Vận Chuyển",
+    "subtitle": "Tìm hiểu về chính sách vận chuyển, thời gian giao hàng và chi phí của chúng tôi."
   }
 }
