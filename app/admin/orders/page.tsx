@@ -1,6 +1,5 @@
 "use client"
 
-import { createClient } from "@/lib/client"
 import {
   Table,
   TableBody,
@@ -15,27 +14,21 @@ import { Badge } from "@/components/ui/badge"
 import { Database } from "@/lib/database"
 import { useEffect, useState } from "react"
 import { useLanguage } from "@/lib/i18n/context"
+import { getAdminOrders } from "@/app/actions/admin"
 
 type OrderWithProfile = Database['public']['Tables']['orders']['Row'] & {
-  profiles: Pick<Database['public']['Tables']['profiles']['Row'], 'full_name' | 'email'> | null
+  profiles: { full_name: string | null; email: string } | null
 }
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState<OrderWithProfile[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const supabase = createClient()
   const { t } = useLanguage()
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const { data, error } = await supabase
-          .from("orders")
-          .select("*, profiles(full_name, email)")
-          .order("created_at", { ascending: false })
-
-        if (error) throw error
-
+        const data = await getAdminOrders()
         setOrders(data as unknown as OrderWithProfile[])
       } catch (error) {
         console.error("Error fetching orders:", error)
@@ -45,7 +38,7 @@ export default function OrdersPage() {
     }
 
     fetchOrders()
-  }, [supabase])
+  }, [])
 
   if (isLoading) {
     return <div>{t("common.loading")}</div>

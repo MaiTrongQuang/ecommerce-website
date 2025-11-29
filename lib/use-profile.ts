@@ -31,6 +31,9 @@ export function useProfile() {
       return
     }
 
+    // Reset loading to true when we have a user but are about to fetch profile
+    setLoading(true)
+
     const fetchProfile = async () => {
       const { data, error } = await supabase.from("profiles").select("*").eq("id", user.id).single()
 

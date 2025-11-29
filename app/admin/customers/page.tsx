@@ -1,6 +1,5 @@
 "use client"
 
-import { createClient } from "@/lib/client"
 import {
   Table,
   TableBody,
@@ -13,6 +12,7 @@ import { formatCurrency } from "@/lib/utils"
 import { useEffect, useState } from "react"
 import { Database } from "@/lib/database"
 import { useLanguage } from "@/lib/i18n/context"
+import { getAdminCustomers } from "@/app/actions/admin"
 
 type Customer = Database['public']['Tables']['profiles']['Row'] & {
   ordersCount: number
@@ -22,46 +22,13 @@ type Customer = Database['public']['Tables']['profiles']['Row'] & {
 export default function CustomersPage() {
   const [customers, setCustomers] = useState<Customer[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const supabase = createClient()
   const { t } = useLanguage()
 
   useEffect(() => {
     const fetchCustomers = async () => {
       try {
-        // Fetch customers
-        const { data: customersData, error: customersError } = await supabase
-          .from("profiles")
-          .select("*")
-          .eq("role", "customer")
-          .order("created_at", { ascending: false })
-
-        if (customersError) throw customersError
-
-        // Fetch order stats for each customer manually since we can't do complex joins easily
-        const customersWithStats = await Promise.all(
-          (customersData || []).map(async (customer) => {
-            const { count } = await supabase
-              .from("orders")
-              .select("*", { count: "exact", head: true })
-              .eq("user_id", customer.id)
-
-            const { data: orders } = await supabase
-              .from("orders")
-              .select("total")
-              .eq("user_id", customer.id)
-              .eq("payment_status", "paid")
-
-            const totalSpent = orders?.reduce((sum, order) => sum + order.total, 0) || 0
-
-            return {
-              ...customer,
-              ordersCount: count || 0,
-              totalSpent,
-            }
-          })
-        )
-
-        setCustomers(customersWithStats)
+        const data = await getAdminCustomers()
+        setCustomers(data)
       } catch (error) {
         console.error("Error fetching customers:", error)
       } finally {
@@ -70,7 +37,7 @@ export default function CustomersPage() {
     }
 
     fetchCustomers()
-  }, [supabase])
+  }, [])
 
   if (isLoading) {
     return <div>{t("common.loading")}</div>
