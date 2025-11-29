@@ -17,11 +17,13 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import { useLanguage } from "@/lib/i18n/context"
 
-export function DeleteProductButton({ id }: { id: string }) {
+export function DeleteProductButton({ id, onSuccess }: { id: string, onSuccess?: () => void }) {
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
   const supabase = createClient()
+  const { t } = useLanguage()
 
   const handleDelete = async () => {
     setIsLoading(true)
@@ -33,10 +35,11 @@ export function DeleteProductButton({ id }: { id: string }) {
 
       if (error) throw error
       
-      toast.success("Product deleted successfully")
+      toast.success(t("admin.form.successDelete"))
       router.refresh()
+      if (onSuccess) onSuccess()
     } catch (error: any) {
-      toast.error(error.message || "Failed to delete product")
+      toast.error(error.message || t("admin.form.error"))
     } finally {
       setIsLoading(false)
     }
@@ -51,15 +54,15 @@ export function DeleteProductButton({ id }: { id: string }) {
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+          <AlertDialogTitle>{t("admin.form.deleteConfirmTitle")}</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete the product.
+            {t("admin.form.deleteConfirmDesc")}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel>{t("admin.form.cancel")}</AlertDialogCancel>
           <AlertDialogAction onClick={handleDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
-            {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Delete"}
+            {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : t("admin.form.delete")}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

@@ -1,4 +1,6 @@
-import { createClient } from "@/lib/server"
+"use client"
+
+import { createClient } from "@/lib/client"
 import { Button } from "@/components/ui/button"
 import {
   Table,
@@ -21,45 +23,74 @@ import {
 import { ProductForm } from "@/components/admin/product-form"
 import { DeleteProductButton } from "@/components/admin/delete-product-button"
 import { Database } from "@/lib/database"
+import { useEffect, useState } from "react"
+import { useLanguage } from "@/lib/i18n/context"
 
 type ProductWithCategory = Database['public']['Tables']['products']['Row'] & {
   categories: Database['public']['Tables']['categories']['Row'] | null
 }
 
-export default async function ProductsPage() {
-  const supabase = await createClient()
+type Category = Database['public']['Tables']['categories']['Row']
 
-  const { data: products } = await supabase
-    .from("products")
-    .select("*, categories(*)")
-    .order("created_at", { ascending: false })
+export default function ProductsPage() {
+  const [products, setProducts] = useState<ProductWithCategory[]>([])
+  const [categories, setCategories] = useState<Category[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const supabase = createClient()
+  const { t } = useLanguage()
 
-  const typedProducts = products as unknown as ProductWithCategory[]
+  const fetchData = async () => {
+    try {
+      const { data: productsData, error: productsError } = await supabase
+        .from("products")
+        .select("*, categories(*)")
+        .order("created_at", { ascending: false })
 
-  const { data: categories } = await supabase
-    .from("categories")
-    .select("*")
-    .order("name")
+      if (productsError) throw productsError
+
+      const { data: categoriesData, error: categoriesError } = await supabase
+        .from("categories")
+        .select("*")
+        .order("name")
+
+      if (categoriesError) throw categoriesError
+
+      setProducts(productsData as unknown as ProductWithCategory[])
+      setCategories(categoriesData)
+    } catch (error) {
+      console.error("Error fetching products:", error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [supabase])
+
+  if (isLoading) {
+    return <div>{t("common.loading")}</div>
+  }
 
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold tracking-tight">Products</h1>
+        <h1 className="text-3xl font-bold tracking-tight">{t("admin.products")}</h1>
         <Dialog>
           <DialogTrigger asChild>
             <Button>
               <Plus className="mr-2 h-4 w-4" />
-              Add Product
+              {t("admin.addProduct")}
             </Button>
           </DialogTrigger>
           <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle>Add New Product</DialogTitle>
+              <DialogTitle>{t("admin.form.create")}</DialogTitle>
               <DialogDescription>
-                Fill in the details to create a new product.
+                {t("admin.form.description")}
               </DialogDescription>
             </DialogHeader>
-            <ProductForm categories={categories || []} />
+            <ProductForm categories={categories} onSuccess={fetchData} />
           </DialogContent>
         </Dialog>
       </div>
@@ -68,17 +99,17 @@ export default async function ProductsPage() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[80px]">Image</TableHead>
-              <TableHead>Name</TableHead>
-              <TableHead>Category</TableHead>
-              <TableHead>Price</TableHead>
-              <TableHead>Stock</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
+              <TableHead className="w-[80px]">{t("admin.image")}</TableHead>
+              <TableHead>{t("admin.productName")}</TableHead>
+              <TableHead>{t("admin.category")}</TableHead>
+              <TableHead>{t("admin.price")}</TableHead>
+              <TableHead>{t("admin.stock")}</TableHead>
+              <TableHead>{t("admin.status")}</TableHead>
+              <TableHead className="text-right">{t("admin.actions")}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {typedProducts?.map((product) => (
+            {products.map((product) => (
               <TableRow key={product.id}>
                 <TableCell>
                   <div className="h-10 w-10 rounded bg-muted overflow-hidden">
@@ -116,13 +147,13 @@ export default async function ProductsPage() {
                       </DialogTrigger>
                       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
                         <DialogHeader>
-                          <DialogTitle>Edit Product</DialogTitle>
+                          <DialogTitle>{t("admin.editProduct")}</DialogTitle>
                         </DialogHeader>
-                        <ProductForm product={product} categories={categories || []} />
+                        <ProductForm product={product} categories={categories} onSuccess={fetchData} />
                       </DialogContent>
                     </Dialog>
                     
-                    <DeleteProductButton id={product.id} />
+                    <DeleteProductButton id={product.id} onSuccess={fetchData} />
                   </div>
                 </TableCell>
               </TableRow>

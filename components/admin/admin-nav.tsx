@@ -13,40 +13,44 @@ import {
 } from "lucide-react"
 import { useAuth } from "@/lib/use-auth"
 import { Button } from "@/components/ui/button"
-
-const navItems = [
-  {
-    title: "Dashboard",
-    href: "/admin",
-    icon: LayoutDashboard,
-  },
-  {
-    title: "Products",
-    href: "/admin/products",
-    icon: Package,
-  },
-  {
-    title: "Orders",
-    href: "/admin/orders",
-    icon: ShoppingCart,
-  },
-  {
-    title: "Customers",
-    href: "/admin/customers",
-    icon: Users,
-  },
-]
+import { useLanguage } from "@/lib/i18n/context"
+import { LanguageSwitcher } from "@/components/language-switcher"
 
 export function AdminNav() {
   const pathname = usePathname()
   const { signOut } = useAuth()
+  const { t } = useLanguage()
+
+  const navItems = [
+    {
+      title: t("admin.dashboard"),
+      href: "/admin",
+      icon: LayoutDashboard,
+    },
+    {
+      title: t("admin.products"),
+      href: "/admin/products",
+      icon: Package,
+    },
+    {
+      title: t("admin.orders"),
+      href: "/admin/orders",
+      icon: ShoppingCart,
+    },
+    {
+      title: t("admin.customers"),
+      href: "/admin/customers",
+      icon: Users,
+    },
+  ]
 
   return (
     <div className="flex flex-col h-full border-r bg-muted/10">
-      <div className="p-6 border-b">
+      <div className="p-6 border-b flex items-center justify-between">
         <Link href="/admin" className="flex items-center gap-2 font-bold text-xl">
           <span className="text-primary">Admin</span>Panel
         </Link>
+        <LanguageSwitcher />
       </div>
       
       <div className="flex-1 py-6 px-4 space-y-2">
@@ -73,7 +77,7 @@ export function AdminNav() {
           className="flex items-center gap-3 px-4 py-3 rounded-md text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
         >
           <Settings className="h-5 w-5" />
-          Back to Store
+          {t("admin.backToStore")}
         </Link>
         <Button 
           variant="ghost" 
@@ -81,7 +85,7 @@ export function AdminNav() {
           onClick={() => signOut()}
         >
           <LogOut className="h-5 w-5" />
-          Sign Out
+          {t("admin.signOut")}
         </Button>
       </div>
     </div>

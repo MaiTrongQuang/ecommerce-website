@@ -1,4 +1,6 @@
-import { createClient } from "@/lib/server"
+"use client"
+
+import { createClient } from "@/lib/client"
 import {
   Table,
   TableBody,
@@ -8,61 +10,92 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { formatCurrency } from "@/lib/utils"
+import { useEffect, useState } from "react"
+import { Database } from "@/lib/database"
+import { useLanguage } from "@/lib/i18n/context"
 
-export default async function CustomersPage() {
-  const supabase = await createClient()
+type Customer = Database['public']['Tables']['profiles']['Row'] & {
+  ordersCount: number
+  totalSpent: number
+}
 
-  // Fetch customers
-  const { data: customers } = await supabase
-    .from("profiles")
-    .select("*")
-    .eq("role", "customer")
-    .order("created_at", { ascending: false })
+export default function CustomersPage() {
+  const [customers, setCustomers] = useState<Customer[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const supabase = createClient()
+  const { t } = useLanguage()
 
-  // Fetch order stats for each customer manually since we can't do complex joins easily
-  const customersWithStats = await Promise.all(
-    (customers || []).map(async (customer) => {
-      const { count } = await supabase
-        .from("orders")
-        .select("*", { count: "exact", head: true })
-        .eq("user_id", customer.id)
+  useEffect(() => {
+    const fetchCustomers = async () => {
+      try {
+        // Fetch customers
+        const { data: customersData, error: customersError } = await supabase
+          .from("profiles")
+          .select("*")
+          .eq("role", "customer")
+          .order("created_at", { ascending: false })
 
-      const { data: orders } = await supabase
-        .from("orders")
-        .select("total")
-        .eq("user_id", customer.id)
-        .eq("payment_status", "paid")
+        if (customersError) throw customersError
 
-      const totalSpent = orders?.reduce((sum, order) => sum + order.total, 0) || 0
+        // Fetch order stats for each customer manually since we can't do complex joins easily
+        const customersWithStats = await Promise.all(
+          (customersData || []).map(async (customer) => {
+            const { count } = await supabase
+              .from("orders")
+              .select("*", { count: "exact", head: true })
+              .eq("user_id", customer.id)
 
-      return {
-        ...customer,
-        ordersCount: count || 0,
-        totalSpent,
+            const { data: orders } = await supabase
+              .from("orders")
+              .select("total")
+              .eq("user_id", customer.id)
+              .eq("payment_status", "paid")
+
+            const totalSpent = orders?.reduce((sum, order) => sum + order.total, 0) || 0
+
+            return {
+              ...customer,
+              ordersCount: count || 0,
+              totalSpent,
+            }
+          })
+        )
+
+        setCustomers(customersWithStats)
+      } catch (error) {
+        console.error("Error fetching customers:", error)
+      } finally {
+        setIsLoading(false)
       }
-    })
-  )
+    }
+
+    fetchCustomers()
+  }, [supabase])
+
+  if (isLoading) {
+    return <div>{t("common.loading")}</div>
+  }
 
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold tracking-tight">Customers</h1>
+        <h1 className="text-3xl font-bold tracking-tight">{t("admin.customers")}</h1>
       </div>
 
       <div className="rounded-md border">
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Name</TableHead>
+              <TableHead>{t("admin.form.name")}</TableHead>
               <TableHead>Email</TableHead>
               <TableHead>Phone</TableHead>
-              <TableHead>Joined</TableHead>
-              <TableHead className="text-right">Orders</TableHead>
-              <TableHead className="text-right">Total Spent</TableHead>
+              <TableHead>{t("admin.joinDate")}</TableHead>
+              <TableHead className="text-right">{t("admin.ordersCount")}</TableHead>
+              <TableHead className="text-right">{t("admin.spent")}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {customersWithStats.map((customer) => (
+            {customers.map((customer) => (
               <TableRow key={customer.id}>
                 <TableCell className="font-medium">{customer.full_name || "N/A"}</TableCell>
                 <TableCell>{customer.email}</TableCell>

@@ -1,4 +1,6 @@
-import { createClient } from "@/lib/server"
+"use client"
+
+import { createClient } from "@/lib/client"
 import {
   Table,
   TableBody,
@@ -11,41 +13,64 @@ import { formatCurrency } from "@/lib/utils"
 import { OrderStatusSelect } from "@/components/admin/order-status-select"
 import { Badge } from "@/components/ui/badge"
 import { Database } from "@/lib/database"
+import { useEffect, useState } from "react"
+import { useLanguage } from "@/lib/i18n/context"
 
 type OrderWithProfile = Database['public']['Tables']['orders']['Row'] & {
   profiles: Pick<Database['public']['Tables']['profiles']['Row'], 'full_name' | 'email'> | null
 }
 
-export default async function OrdersPage() {
-  const supabase = await createClient()
+export default function OrdersPage() {
+  const [orders, setOrders] = useState<OrderWithProfile[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const supabase = createClient()
+  const { t } = useLanguage()
 
-  const { data: orders } = await supabase
-    .from("orders")
-    .select("*, profiles(full_name, email)")
-    .order("created_at", { ascending: false })
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("orders")
+          .select("*, profiles(full_name, email)")
+          .order("created_at", { ascending: false })
 
-  const typedOrders = orders as unknown as OrderWithProfile[]
+        if (error) throw error
+
+        setOrders(data as unknown as OrderWithProfile[])
+      } catch (error) {
+        console.error("Error fetching orders:", error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchOrders()
+  }, [supabase])
+
+  if (isLoading) {
+    return <div>{t("common.loading")}</div>
+  }
 
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold tracking-tight">Orders</h1>
+        <h1 className="text-3xl font-bold tracking-tight">{t("admin.orders")}</h1>
       </div>
 
       <div className="rounded-md border">
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Order #</TableHead>
-              <TableHead>Date</TableHead>
-              <TableHead>Customer</TableHead>
-              <TableHead>Payment</TableHead>
-              <TableHead>Total</TableHead>
-              <TableHead>Status</TableHead>
+              <TableHead>{t("admin.orderNumber")}</TableHead>
+              <TableHead>{t("admin.date")}</TableHead>
+              <TableHead>{t("admin.customer")}</TableHead>
+              <TableHead>{t("admin.paymentStatus")}</TableHead>
+              <TableHead>{t("admin.total")}</TableHead>
+              <TableHead>{t("admin.status")}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {typedOrders?.map((order) => (
+            {orders.map((order) => (
               <TableRow key={order.id}>
                 <TableCell className="font-medium">{order.order_number}</TableCell>
                 <TableCell>
@@ -59,7 +84,7 @@ export default async function OrdersPage() {
                 </TableCell>
                 <TableCell>
                   <Badge variant={order.payment_status === 'paid' ? 'default' : 'secondary'}>
-                    {order.payment_status}
+                    {t(`orders.paymentStatusLabels.${order.payment_status}`)}
                   </Badge>
                 </TableCell>
                 <TableCell>{formatCurrency(order.total)}</TableCell>

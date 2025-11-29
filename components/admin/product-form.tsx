@@ -17,6 +17,7 @@ import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import { Loader2, Plus, X } from "lucide-react"
 import { Database } from "@/lib/database"
+import { useLanguage } from "@/lib/i18n/context"
 
 type Product = Database['public']['Tables']['products']['Row']
 type Category = Database['public']['Tables']['categories']['Row']
@@ -33,6 +34,7 @@ export function ProductForm({ product, categories, onSuccess }: ProductFormProps
   const [newImageUrl, setNewImageUrl] = useState("")
   const router = useRouter()
   const supabase = createClient()
+  const { t } = useLanguage()
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -62,20 +64,20 @@ export function ProductForm({ product, categories, onSuccess }: ProductFormProps
           .eq("id", product.id)
         
         if (error) throw error
-        toast.success("Product updated successfully")
+        toast.success(t("admin.form.successUpdate"))
       } else {
         const { error } = await supabase
           .from("products")
           .insert(data)
         
         if (error) throw error
-        toast.success("Product created successfully")
+        toast.success(t("admin.form.successCreate"))
       }
 
       router.refresh()
       if (onSuccess) onSuccess()
     } catch (error: any) {
-      toast.error(error.message || "Something went wrong")
+      toast.error(error.message || t("admin.form.error"))
     } finally {
       setIsLoading(false)
     }
@@ -96,56 +98,56 @@ export function ProductForm({ product, categories, onSuccess }: ProductFormProps
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="grid gap-4 md:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="name">Product Name</Label>
+          <Label htmlFor="name">{t("admin.form.name")}</Label>
           <Input id="name" name="name" defaultValue={product?.name} required />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="slug">Slug</Label>
+          <Label htmlFor="slug">{t("admin.form.slug")}</Label>
           <Input id="slug" name="slug" defaultValue={product?.slug} required />
         </div>
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="description">Description</Label>
+        <Label htmlFor="description">{t("admin.form.description")}</Label>
         <Textarea id="description" name="description" defaultValue={product?.description || ""} />
       </div>
 
       <div className="grid gap-4 md:grid-cols-3">
         <div className="space-y-2">
-          <Label htmlFor="price">Price</Label>
+          <Label htmlFor="price">{t("admin.form.price")}</Label>
           <Input id="price" name="price" type="number" step="0.01" defaultValue={product?.price} required />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="compare_at_price">Compare at Price</Label>
+          <Label htmlFor="compare_at_price">{t("admin.form.compareAtPrice")}</Label>
           <Input id="compare_at_price" name="compare_at_price" type="number" step="0.01" defaultValue={product?.compare_at_price || ""} />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="cost_per_item">Cost per Item</Label>
+          <Label htmlFor="cost_per_item">{t("admin.form.costPerItem")}</Label>
           <Input id="cost_per_item" name="cost_per_item" type="number" step="0.01" defaultValue={product?.cost_per_item || ""} />
         </div>
       </div>
 
       <div className="grid gap-4 md:grid-cols-3">
         <div className="space-y-2">
-          <Label htmlFor="sku">SKU</Label>
+          <Label htmlFor="sku">{t("admin.form.sku")}</Label>
           <Input id="sku" name="sku" defaultValue={product?.sku || ""} />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="barcode">Barcode</Label>
+          <Label htmlFor="barcode">{t("admin.form.barcode")}</Label>
           <Input id="barcode" name="barcode" defaultValue={product?.barcode || ""} />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="quantity">Quantity</Label>
+          <Label htmlFor="quantity">{t("admin.form.quantity")}</Label>
           <Input id="quantity" name="quantity" type="number" defaultValue={product?.quantity || 0} required />
         </div>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="category_id">Category</Label>
+          <Label htmlFor="category_id">{t("admin.form.category")}</Label>
           <Select name="category_id" defaultValue={product?.category_id || ""}>
             <SelectTrigger>
-              <SelectValue placeholder="Select category" />
+              <SelectValue placeholder={t("admin.form.selectCategory")} />
             </SelectTrigger>
             <SelectContent>
               {categories.map((category) => (
@@ -157,10 +159,10 @@ export function ProductForm({ product, categories, onSuccess }: ProductFormProps
           </Select>
         </div>
         <div className="space-y-2">
-          <Label htmlFor="status">Status</Label>
+          <Label htmlFor="status">{t("admin.form.status")}</Label>
           <Select name="status" defaultValue={product?.status || "active"}>
             <SelectTrigger>
-              <SelectValue placeholder="Select status" />
+              <SelectValue placeholder={t("admin.form.selectStatus")} />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="active">Active</SelectItem>
@@ -172,12 +174,12 @@ export function ProductForm({ product, categories, onSuccess }: ProductFormProps
       </div>
 
       <div className="space-y-2">
-        <Label>Images</Label>
+        <Label>{t("admin.form.images")}</Label>
         <div className="flex gap-2">
           <Input 
             value={newImageUrl} 
             onChange={(e) => setNewImageUrl(e.target.value)} 
-            placeholder="Image URL" 
+            placeholder={t("admin.form.imageUrl")} 
           />
           <Button type="button" onClick={addImage} size="icon">
             <Plus className="h-4 w-4" />
@@ -203,7 +205,7 @@ export function ProductForm({ product, categories, onSuccess }: ProductFormProps
       <div className="flex justify-end gap-4">
         <Button type="submit" disabled={isLoading}>
           {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          {product ? "Update Product" : "Create Product"}
+          {product ? t("admin.form.update") : t("admin.form.create")}
         </Button>
       </div>
     </form>
