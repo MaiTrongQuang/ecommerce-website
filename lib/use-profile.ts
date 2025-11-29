@@ -15,12 +15,16 @@ interface Profile {
 }
 
 export function useProfile() {
-  const { user } = useAuth()
+  const { user, loading: authLoading } = useAuth()
   const [profile, setProfile] = useState<Profile | null>(null)
   const [loading, setLoading] = useState(true)
   const supabase = createClient()
 
   useEffect(() => {
+    if (authLoading) {
+      return
+    }
+
     if (!user) {
       setProfile(null)
       setLoading(false)
@@ -37,7 +41,7 @@ export function useProfile() {
     }
 
     fetchProfile()
-  }, [user, supabase])
+  }, [user, authLoading, supabase])
 
   const updateProfile = async (updates: Partial<Profile>) => {
     if (!user) return { error: new Error("Not authenticated") }
