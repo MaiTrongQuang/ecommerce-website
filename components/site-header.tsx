@@ -2,6 +2,7 @@
 
 import type React from "react"
 
+import Image from "next/image"
 import Link from "next/link"
 import { ShoppingCart, Search, Menu } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -34,8 +35,10 @@ export function SiteHeader() {
         <div className="container flex h-16 items-center justify-between">
           <div className="flex items-center gap-6">
             <Link href="/" className="flex items-center space-x-2">
-              <ShoppingCart className="h-6 w-6" />
-              <span className="font-bold text-xl">{t("common.store")}</span>
+              <div className="relative h-8 w-8">
+                <Image src="/logo.png" alt="Quang Store Logo" fill className="object-contain" />
+              </div>
+              <span className="font-bold text-xl">Quang Store</span>
             </Link>
 
             <nav className="hidden md:flex items-center gap-6">

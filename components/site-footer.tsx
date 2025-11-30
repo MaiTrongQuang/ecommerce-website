@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import Link from "next/link"
 import { ShoppingCart } from "lucide-react"
 import { useLanguage } from "@/lib/i18n/context"
@@ -13,8 +14,10 @@ export function SiteFooter() {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
-              <ShoppingCart className="h-6 w-6" />
-              <span className="font-bold text-xl">{t("common.store")}</span>
+              <div className="relative h-8 w-8">
+                <Image src="/logo.png" alt="Quang Store Logo" fill className="object-contain" />
+              </div>
+              <span className="font-bold text-xl">Quang Store</span>
             </div>
             <p className="text-sm text-muted-foreground">{t("footer.tagline")}</p>
           </div>

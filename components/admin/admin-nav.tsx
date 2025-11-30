@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
@@ -48,7 +49,10 @@ export function AdminNav() {
     <div className="flex flex-col h-full border-r bg-muted/10">
       <div className="p-6 border-b flex items-center justify-between">
         <Link href="/admin" className="flex items-center gap-2 font-bold text-xl">
-          <span className="text-primary">Admin</span>Panel
+          <div className="relative h-8 w-8">
+            <Image src="/logo.png" alt="Quang Logo" fill className="object-contain" />
+          </div>
+          <span className="text-primary">Quang</span>Admin
         </Link>
         <LanguageSwitcher />
       </div>

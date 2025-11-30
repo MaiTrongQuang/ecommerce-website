@@ -21,25 +21,25 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "E-Commerce Store",
-    template: "%s | E-Commerce Store",
+    default: "Quang Store",
+    template: "%s | Quang Store",
   },
-  description: "Your one-stop shop for everything. Discover amazing products at unbeatable prices.",
-  keywords: ["e-commerce", "shopping", "online store", "products"],
-  authors: [{ name: "E-Commerce Store" }],
-  creator: "E-Commerce Store",
+  description: "Your personal destination for quality products. Shop with confidence at Quang Store.",
+  keywords: ["e-commerce", "shopping", "online store", "Quang Store", "electronics", "fashion"],
+  authors: [{ name: "Mai Trọng Quang" }],
+  creator: "Mai Trọng Quang",
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
   openGraph: {
     type: "website",
-    locale: "en_US",
-    siteName: "E-Commerce Store",
-    title: "E-Commerce Store",
-    description: "Your one-stop shop for everything",
+    locale: "vi_VN",
+    siteName: "Quang Store",
+    title: "Quang Store - Quality Products for You",
+    description: "Your personal destination for quality products. Shop with confidence at Quang Store.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "E-Commerce Store",
-    description: "Your one-stop shop for everything",
+    title: "Quang Store",
+    description: "Your personal destination for quality products. Shop with confidence at Quang Store.",
   },
   robots: {
     index: true,
