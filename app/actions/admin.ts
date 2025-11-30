@@ -28,29 +28,34 @@ export async function getAdminStats() {
 
   const adminClient = createAdminClient()
 
-  // Fetch orders
-  const { data: ordersData, error: ordersError } = await adminClient
+  // 1. Calculate Total Revenue
+  // We consider all orders that are NOT cancelled, failed, or refunded as "Revenue" (GMV)
+  const { data: validOrders, error: revenueError } = await adminClient
     .from("orders")
-    .select("total, payment_status, created_at")
-    .order("created_at", { ascending: true })
+    .select("total")
+    .neq("status", "cancelled")
+    .neq("payment_status", "failed")
+    .neq("payment_status", "refunded")
+
+  if (revenueError) throw revenueError
+
+  const revenue = (validOrders as { total: number }[]).reduce((acc, order) => acc + order.total, 0)
+
+  // 2. Count Total Orders
+  const { count: ordersCount, error: ordersError } = await adminClient
+    .from("orders")
+    .select("*", { count: "exact", head: true })
 
   if (ordersError) throw ordersError
-  
-  const orders = ordersData as Pick<Order, 'total' | 'payment_status' | 'created_at'>[]
 
-  // Calculate revenue (only paid orders)
-  const revenue = orders
-    ?.filter((order) => order.payment_status === "paid")
-    .reduce((acc, order) => acc + order.total, 0) || 0
-
-  // Fetch products count
+  // 3. Count Products
   const { count: productsCount, error: productsError } = await adminClient
     .from("products")
     .select("*", { count: "exact", head: true })
 
   if (productsError) throw productsError
 
-  // Fetch customers count
+  // 4. Count Customers
   const { count: customersCount, error: customersError } = await adminClient
     .from("profiles")
     .select("*", { count: "exact", head: true })
@@ -58,26 +63,42 @@ export async function getAdminStats() {
 
   if (customersError) throw customersError
 
-  // Prepare chart data (revenue by month for the last 6 months)
-  const chartData = getRevenueChartData(orders || [])
+  // 5. Prepare Chart Data (Last 6 months)
+  const sixMonthsAgo = new Date()
+  sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 5)
+  sixMonthsAgo.setDate(1) // Start from the 1st of that month
+  sixMonthsAgo.setHours(0, 0, 0, 0)
+
+  const { data: chartOrders, error: chartError } = await adminClient
+    .from("orders")
+    .select("total, created_at")
+    .neq("status", "cancelled")
+    .neq("payment_status", "failed")
+    .neq("payment_status", "refunded")
+    .gte("created_at", sixMonthsAgo.toISOString())
+    .order("created_at", { ascending: true })
+
+  if (chartError) throw chartError
+
+  const chartData = getRevenueChartData(chartOrders || [])
 
   return {
     revenue,
-    orders: orders?.length || 0,
+    orders: ordersCount || 0,
     products: productsCount || 0,
     customers: customersCount || 0,
     chartData,
   }
 }
 
-function getRevenueChartData(orders: Pick<Order, 'total' | 'payment_status' | 'created_at'>[]) {
+function getRevenueChartData(orders: Pick<Order, 'total' | 'created_at'>[]) {
   const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-  const currentMonth = new Date().getMonth()
+  const currentDate = new Date()
   const last6Months: { name: string; total: number; monthIndex: number; year: number }[] = []
 
+  // Initialize last 6 months buckets
   for (let i = 5; i >= 0; i--) {
-    const d = new Date()
-    d.setMonth(currentMonth - i)
+    const d = new Date(currentDate.getFullYear(), currentDate.getMonth() - i, 1)
     last6Months.push({
       name: months[d.getMonth()],
       total: 0,
@@ -87,8 +108,6 @@ function getRevenueChartData(orders: Pick<Order, 'total' | 'payment_status' | 'c
   }
 
   orders.forEach(order => {
-    if (order.payment_status !== 'paid') return
-    
     const date = new Date(order.created_at)
     const monthIndex = date.getMonth()
     const year = date.getFullYear()
@@ -216,7 +235,7 @@ export async function getAdminCustomers() {
   const customersWithStats = customers.map(customer => {
     const customerOrders = allOrders?.filter(o => o.user_id === customer.id) || []
     const totalSpent = customerOrders
-      .filter(o => o.payment_status === 'paid')
+      .filter(o => o.payment_status?.toLowerCase() === 'paid')
       .reduce((sum, o) => sum + o.total, 0)
 
     return {

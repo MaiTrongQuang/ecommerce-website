@@ -1,53 +1,18 @@
-"use client"
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { useEffect, useState } from "react"
 import { DollarSign, Package, ShoppingCart, Users } from "lucide-react"
-import { useLanguage } from "@/lib/i18n/context"
+import { getServerLanguage } from "@/lib/i18n/server"
+import { t as translate } from "@/lib/i18n/index"
 import { formatCurrency } from "@/lib/utils"
 import { getAdminStats, getRecentOrders } from "@/app/actions/admin"
 import { Overview } from "@/components/admin/overview"
-import { Database } from "@/lib/database"
 
-type OrderWithProfile = Database['public']['Tables']['orders']['Row'] & {
-  profiles: { full_name: string | null } | null
-}
-
-export default function AdminDashboardPage() {
-  const [stats, setStats] = useState({
-    revenue: 0,
-    orders: 0,
-    products: 0,
-    customers: 0,
-    chartData: [] as { name: string; total: number }[]
-  })
-  const [recentOrders, setRecentOrders] = useState<OrderWithProfile[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const { t } = useLanguage()
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [statsData, ordersData] = await Promise.all([
-          getAdminStats(),
-          getRecentOrders()
-        ])
-
-        setStats(statsData)
-        setRecentOrders(ordersData as unknown as OrderWithProfile[])
-      } catch (error) {
-        console.error("Error fetching admin stats:", error)
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    fetchData()
-  }, [])
-
-  if (isLoading) {
-    return <div>{t("common.loading")}</div>
-  }
+export default async function AdminDashboardPage() {
+  const lang = await getServerLanguage()
+  const t = (key: string) => translate(lang, key)
+  const [stats, recentOrders] = await Promise.all([
+    getAdminStats(),
+    getRecentOrders()
+  ])
 
   return (
     <div className="space-y-8">

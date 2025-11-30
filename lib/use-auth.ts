@@ -24,10 +24,14 @@ export function useAuth() {
     // Listen for auth changes
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    } = supabase.auth.onAuthStateChange((event, session) => {
       setUser(session?.user ?? null)
       setLoading(false)
-      router.refresh()
+      
+      // Only refresh on sign in or sign out to avoid infinite loops
+      if (event === 'SIGNED_IN' || event === 'SIGNED_OUT') {
+        router.refresh()
+      }
     })
 
     return () => subscription.unsubscribe()
