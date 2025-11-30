@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/server"
 import { getServerLanguage, getProductOriginFilter } from "@/lib/i18n/server"
-import { HomeContent } from "@/components/home-content"
+import { LandingPage } from "@/components/landing-page"
 
 export default async function HomePage() {
   const supabase = await createClient()
@@ -30,5 +30,5 @@ export default async function HomePage() {
   // Fetch categories
   const { data: categories } = await supabase.from("categories").select("*, slug").limit(6)
 
-  return <HomeContent products={products || []} categories={categories || []} />
+  return <LandingPage products={products || []} categories={categories || []} />
 }
