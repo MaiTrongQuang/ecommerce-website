@@ -1,33 +1,20 @@
 "use client"
 
-import type React from "react"
-
 import Image from "next/image"
 import Link from "next/link"
-import { ShoppingCart, Search, Menu } from "lucide-react"
+import { ShoppingCart, Menu } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { UserMenu } from "@/components/user-menu"
 import { LanguageSwitcher } from "@/components/language-switcher"
 import { useCart } from "@/lib/use-cart"
 import { Badge } from "@/components/ui/badge"
-import { useState } from "react"
-import { useRouter } from "next/navigation"
 import { CartDrawer } from "@/components/cart-drawer"
 import { useLanguage } from "@/lib/i18n/context"
+import { SiteSearch } from "@/components/site-search"
 
 export function SiteHeader() {
   const { itemCount, toggleCart } = useCart()
   const { t } = useLanguage()
-  const [searchQuery, setSearchQuery] = useState("")
-  const router = useRouter()
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (searchQuery.trim()) {
-      router.push(`/products?search=${encodeURIComponent(searchQuery)}`)
-    }
-  }
 
   return (
     <>
@@ -48,42 +35,37 @@ export function SiteHeader() {
               <Link href="/categories" className="text-sm font-medium transition-colors hover:text-primary">
                 {t("common.categories")}
               </Link>
-              <Link href="/deals" className="text-sm font-medium transition-colors hover:text-primary">
-                {t("common.deals")}
+              <Link href="/about" className="text-sm font-medium transition-colors hover:text-primary">
+                {t("common.about")}
               </Link>
             </nav>
           </div>
 
-          <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-md mx-4">
-            <div className="relative w-full">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-              <Input
-                type="search"
-                placeholder={t("common.search")}
-                className="pl-10"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
+          <div className="flex items-center gap-4">
+            <div className="hidden md:block">
+              <SiteSearch />
             </div>
-          </form>
 
-          <div className="flex items-center gap-2">
-            <LanguageSwitcher />
-            <Button variant="ghost" size="icon" className="relative" onClick={toggleCart}>
-              <ShoppingCart className="h-5 w-5" />
-              {itemCount > 0 && (
-                <Badge
-                  variant="destructive"
-                  className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs"
-                >
-                  {itemCount}
-                </Badge>
-              )}
-            </Button>
-            <UserMenu />
-            <Button variant="ghost" size="icon" className="md:hidden">
-              <Menu className="h-5 w-5" />
-            </Button>
+            <div className="flex items-center gap-2">
+              <LanguageSwitcher />
+              <Button variant="ghost" size="icon" className="relative" onClick={toggleCart}>
+                <ShoppingCart className="h-5 w-5" />
+                {itemCount > 0 && (
+                  <Badge
+                    variant="destructive"
+                    className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs"
+                  >
+                    {itemCount}
+                  </Badge>
+                )}
+              </Button>
+              <UserMenu />
+              <div className="md:hidden">
+                <Button variant="ghost" size="icon">
+                  <Menu className="h-5 w-5" />
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
       </header>
