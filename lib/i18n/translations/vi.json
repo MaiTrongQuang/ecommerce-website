@@ -310,6 +310,13 @@
       "delivered": "Đã Giao",
       "cancelled": "Đã Hủy"
     },
+    "statusLabels": {
+      "pending": "Đang Chờ",
+      "processing": "Đang Xử Lý",
+      "shipped": "Đã Gửi Hàng",
+      "delivered": "Đã Giao",
+      "cancelled": "Đã Hủy"
+    },
     "paymentStatusLabels": {
       "pending": "Đang Chờ",
       "paid": "Đã Thanh Toán",
@@ -437,6 +444,14 @@
       "deleteConfirmDesc": "Hành động này không thể hoàn tác. Sản phẩm sẽ bị xóa vĩnh viễn.",
       "delete": "Xóa",
       "cancel": "Hủy"
-    }
+    },
+    "order": "Đơn Hàng"
+  },
+  "statusLabels": {
+    "pending": "Đang Chờ",
+    "processing": "Đang Xử Lý",
+    "shipped": "Đã Gửi Hàng",
+    "delivered": "Đã Giao",
+    "cancelled": "Đã Hủy"
   }
 }

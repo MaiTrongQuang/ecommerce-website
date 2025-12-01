@@ -163,7 +163,7 @@ export async function getRecentOrders() {
   return ordersWithProfiles
 }
 
-export async function getAdminOrders() {
+export async function getAdminOrders(query?: string) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
@@ -171,14 +171,24 @@ export async function getAdminOrders() {
 
   const adminClient = createAdminClient()
 
-  const { data: ordersData, error } = await adminClient
+  let ordersQuery = adminClient
     .from("orders")
     .select("*")
     .order("created_at", { ascending: false })
 
+  if (query) {
+    // We can't easily join and filter on related tables in one go with Supabase simple filtering if we want to search by profile name/email.
+    // However, we can search by order_number directly.
+    // For searching by user details, we might need a different approach or two queries.
+    // Let's try to search by order_number first.
+    ordersQuery = ordersQuery.ilike('order_number', `%${query}%`)
+  }
+
+  const { data: ordersData, error } = await ordersQuery
+
   if (error) throw error
   
-  const orders = ordersData as Order[]
+  let orders = ordersData as Order[]
 
   // Manual join with profiles
   const userIds = Array.from(new Set(orders.map(o => o.user_id)))
@@ -196,12 +206,84 @@ export async function getAdminOrders() {
     }
   }
 
-  const ordersWithProfiles = orders.map(order => ({
+  let ordersWithProfiles = orders.map(order => ({
     ...order,
     profiles: profiles.find(p => p.id === order.user_id) || null
   }))
 
+  // If query is present, we might also want to filter by user name or email which we just fetched.
+  // Since we are doing client-side join effectively, we can filter here.
+  if (query) {
+    const lowerQuery = query.toLowerCase()
+    ordersWithProfiles = ordersWithProfiles.filter(order => 
+      order.order_number.toLowerCase().includes(lowerQuery) ||
+      order.profiles?.full_name?.toLowerCase().includes(lowerQuery) ||
+      order.profiles?.email?.toLowerCase().includes(lowerQuery)
+    )
+  }
+
   return ordersWithProfiles
+}
+
+export async function getAdminOrderDetails(orderId: string) {
+  if (!orderId || orderId === 'undefined') {
+    throw new Error("Invalid Order ID")
+  }
+
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  if (!user) throw new Error("Unauthorized")
+
+  const adminClient = createAdminClient()
+
+  // 1. Fetch Order
+  const { data: orderData, error: orderError } = await adminClient
+    .from("orders")
+    .select("*")
+    .eq("id", orderId)
+    .single()
+
+  if (orderError) throw orderError
+  
+  const order = orderData as Order
+
+  // 2. Fetch Order Items
+  const { data: orderItems, error: itemsError } = await adminClient
+    .from("order_items")
+    .select("*")
+    .eq("order_id", orderId)
+
+  if (itemsError) throw itemsError
+
+  // 3. Fetch Profile (Customer)
+  let profile = null
+  if (order.user_id) {
+    const { data: profileData } = await adminClient
+      .from("profiles")
+      .select("*")
+      .eq("id", order.user_id)
+      .single()
+    profile = profileData
+  }
+
+  // 4. Fetch Shipping Address
+  let shippingAddress = null
+  if (order.shipping_address_id) {
+    const { data: addressData } = await adminClient
+      .from("addresses")
+      .select("*")
+      .eq("id", order.shipping_address_id)
+      .single()
+    shippingAddress = addressData
+  }
+
+  return {
+    ...order,
+    items: orderItems,
+    profile,
+    shippingAddress
+  }
 }
 
 export async function getAdminCustomers() {

@@ -310,6 +310,13 @@
       "delivered": "Delivered",
       "cancelled": "Cancelled"
     },
+    "statusLabels": {
+      "pending": "Pending",
+      "processing": "Processing",
+      "shipped": "Shipped",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled"
+    },
     "paymentStatusLabels": {
       "pending": "Pending",
       "paid": "Paid",
@@ -437,6 +444,14 @@
       "deleteConfirmDesc": "This action cannot be undone. This will permanently delete the product.",
       "delete": "Delete",
       "cancel": "Cancel"
-    }
+    },
+    "order": "Order"
+  },
+  "statusLabels": {
+    "pending": "Pending",
+    "processing": "Processing",
+    "shipped": "Shipped",
+    "delivered": "Delivered",
+    "cancelled": "Cancelled"
   }
 }
